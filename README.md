@@ -33,9 +33,14 @@ Caching response via key, using defined time-to-live.
 Availability for customization of error pages for different HTTP error codes or responses.
 
 #### Constrains/Implementation rules/Non-functional requirements
+- Up-to-date documentation
 - Custom Resource Definition (with yaml configuration)
 - HTTP IPv4 network stack
+- Support at least 1000 request per second
 - Session ticket usage
 - Response timeout: 5s
 - Cache expiration time: 2h
-- Session expiration: 8h 
+- Session expiration: 8h
+- Testing coverage not less than 80%
+- Successfull load testing
+- Logs are stored for 30 days
