@@ -15,13 +15,22 @@ A typical ingress implementation in k8s forwards incoming traffic to a particula
 - Yandex
 
 #### Features
-- Ingress reverse proxy
-- Traffic logging
-- Load balancing
-- Single Sing-On
-- OpenAPI scheme generation
-- Request Validation
-- Response Caching
+- Request routing  
+Implements K8s ingress reverse proxy functionality.  
+- Audit (traffic logging)  
+Logging of connections and responses. Availability for collecting metrics.
+- Load balancing  
+Integration with K8s native load balancing to improve perfomance of the system overall and make it scalable.
+- Single Sing-On  
+Integration with SSO protocols and support of the different auth methods.
+- OpenAPI scheme generation  
+Automated generation of the OpenAPI scheme based on the source code.
+- Request Validation  
+Validation of the requests for corresponding to OpenAPI scheme.
+- Response Caching  
+Caching response via key, using defined time-to-live.
+- Errors handling and response customization  
+Availability for customization of error pages for different HTTP error codes or responses.
 
 #### Constrains/Implementation rules/Non-functional requirements
 - Custom Resource Definition (with yaml configuration)
