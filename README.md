@@ -5,12 +5,17 @@
 - Tsaturyan Konstantin
 - Tsurkan Daniel
 
+## KEA (Kubernetes Extender to API)
+![Product Picture]([])
+
 ## Product requirements:
 ### Self-documenting API gateway
 A typical ingress implementation in k8s forwards incoming traffic to a particular application. An improved API Gateway would integrate Single Sign-On, automatic OpenAPI schema generation, request validation and response caching. The goal of the project is to develop such a Kubernetes operator to extend existing ingress implementations to API Gateway. The project should provide means to define API schema using Custom Resource Definitions in K8s directly and generate them from the source code following a set of conventions.
 
 ### Stakeholders
-- Anton Sergeevich Kheintankov
+- Anton Sergeevich Kheintankov  
+  
+IT Companies that use Kubernetes, as our clients:  
 - Kaspersky Lab
 - Yandex
 
@@ -32,15 +37,21 @@ Caching response via key, using defined time-to-live. Implement cache invalidati
 - Errors handling and response customization  
 Availability for customization of error pages for different HTTP error codes or responses.
 
-### Constrains/Implementation rules/Non-functional requirements
-- Up-to-date documentation
-- Custom Resource Definition (with yaml configuration)
-- HTTP IPv4 network stack
+### Constrains
+- Operator should support Kubernetes versions from 1.19 (as ingress was frozen since this version)
+- HTTP IPv4 network stack with TLS encryption
+
+### Implementation rules
+- Extension of ingress is made via Kubernetes Operators and CRDs configurations
+- HTTP IPv4 network stack with TLS encryption
+- Use session ticket for caching responses and SSO procedure
+- Validation is based on OpenAPI principles
+- Tests code coverage - 80%
+
+### Non-functional requirements
+- OpenAPI scheme should be generated as the source code was modified
 - Support at least 1000 request per second
-- Session ticket usage
 - Response timeout: 5s
 - Cache expiration time: 2h
 - Session expiration: 8h
-- Testing coverage not less than 80%
-- Successfull load testing
 - Logs are stored for 30 days
