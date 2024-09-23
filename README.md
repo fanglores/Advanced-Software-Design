@@ -6,7 +6,8 @@
 - Tsurkan Daniel
 
 ## KEA (Kubernetes Extender to API)
-![Product Picture]([])
+<img src="product_img.jpg" alt="Product Image" width="300"/>
+<sup> Kea parrot. Picture from: Kea the Clever Clown of the Alps, Milford Sound </sup>
 
 ## Product requirements:
 ### Self-documenting API gateway
