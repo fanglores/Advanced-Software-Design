@@ -1,0 +1,26 @@
+@startuml
+
+interface Stack {
+  + push(obj: Element)
+  + pop(): Element
+  + reset()
+  {static} + createNew(): Stack
+}
+
+class Element {
+}
+
+class ListStack {
+  + push(obj: Element)
+  + pop(): Element
+  + reset()
+  {static} + createNew(): Stack
+  - arr: Element[1..*] {ordered, non-unique}
+  - increment: integer {read-only}
+  # resize(newSize: integer)
+}
+
+Stack <|.. ListStack
+Stack ..> Element
+
+@enduml

@@ -1,0 +1,23 @@
+@startuml
+
+interface Stack {
+  + push(obj: Element)
+  + pop(): Element
+  + reset()
+  {static} + createNew(): Stack
+}
+
+class Element {
+}
+
+class ListStack {
+  + push(obj: Element)
+  + pop(): Element
+  + reset()
+  {static} + createNew(): Stack
+}
+
+Stack <|.. ListStack
+Stack ..> Element
+
+@enduml
