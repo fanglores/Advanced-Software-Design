@@ -1,0 +1,9 @@
+@startuml
+
+class CompanyAccount {}
+
+class Company {}
+
+Company "owner" --> "currentOperations" CompanyAccount
+
+@enduml

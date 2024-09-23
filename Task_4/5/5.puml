@@ -1,0 +1,13 @@
+@startuml
+actor User
+
+rectangle OnlineTranslator {
+    usecase Translate as "Translate" <<abstract>>
+    usecase TranslateText as "Translate Text"
+    usecase TranslateWebPage as "Translate Web Page"
+}
+
+User --> Translate
+Translate <-- TranslateText
+Translate <-- TranslateWebPage
+@enduml

@@ -1,0 +1,19 @@
+@startuml
+
+rectangle VendingMachine {
+    usecase CollectCash
+    usecase ChangeWater
+    usecase ChangeGas
+    
+    usecase Maintenance
+    usecase Authorize
+    usecase Finalize
+}
+
+CollectCash --> Maintenance : <<excludes>>
+ChangeWater --> Maintenance : <<excludes>>
+ChangeGas --> Maintenance : <<excludes>>
+
+Maintenance --> Authorize : <<includes>>
+Maintenance --> Finalize : <<includes>>
+@enduml

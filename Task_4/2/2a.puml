@@ -1,0 +1,12 @@
+@startuml
+
+class PersonalAccount {}
+
+class Person {
+  +FullName: String
+}
+
+Person "owner" --> PersonalAccount : Owns
+
+
+@enduml
