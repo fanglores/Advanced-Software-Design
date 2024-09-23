@@ -1,0 +1,33 @@
+@startchen
+
+entity Course {
+}
+
+entity Lecture {
+}
+
+entity Teacher {
+}
+
+entity Practice {
+}
+
+relationship Teaches {
+}
+
+relationship "Course Practice" as CoursePractice {
+}
+
+relationship "Course Lecture" as CourseLecture {
+}
+
+Course -1- CourseLecture
+CourseLecture -1- Lecture
+
+Course -N- Teaches
+Teaches -1- Teacher
+
+Course -1- CoursePractice
+CoursePractice -N- Practice
+
+@endchen
