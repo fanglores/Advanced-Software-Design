@@ -1,0 +1,34 @@
+@startuml
+class SmartHouse {
+    -wall[4] : Wall
+    -roof : Roof
+    +stormWarning()
+    +harden()
+    +closeWindows()
+}
+
+class Wall {
+}
+
+class Roof {
+}
+
+class Material {
+    +price: double
+    +unitWeight: double
+}
+
+SmartHouse --o Wall
+SmartHouse --o Roof
+Material <|-- Brick
+Material <|-- Plank
+
+class Brick {
+    +color: String {red, white}
+}
+
+class Plank {
+    +type: String {oak or pine}
+}
+
+@enduml
