@@ -12,6 +12,7 @@ Role description: System architect manages complex infrastructure taking respons
 - Improving system security through centralized authentication.
 - Simplify architecture management and integration of various service.
 
+##
 ### DevOps-engineer
 Role description: DevOps-engineer is responsible for process automation, deployment and infrastructure support, including performance optimization and scalability of services.
 
