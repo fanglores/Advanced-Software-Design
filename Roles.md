@@ -1,6 +1,7 @@
 ## Roles
 The Gateway API being developed is intended for third-party clients and will be distributed as a library. Our product solves tasks for several roles at once. Initially, we focused on the implementation of Single Sign-On (SSO), which is important for system architects who simplify the management of authentication and interaction of multiple services. Then we added features to help DevOps engineers with centralized request management through the API Gateway, including validation and caching. We also took into account the needs of developers by automating the API documentation process to facilitate their work.
 
+##
 ### System architect
 Role description: System architect manages complex infrastructure taking responsibility for integration part of various services and systems, as well as their scalability and security.
 
@@ -24,6 +25,7 @@ Role description: DevOps-engineer is responsible for process automation, deploym
 - Improve efficiency/performance metrics and infrastructure reliability.
 - Performance optimization through response caching and validation.
 
+##
 ### Developer
 Role description: Developer is focused on building and maintaining application, APIs and providing their functionality. It's important for him to automate routine tasks and provide up-to-date documentation for ease of support.
 
