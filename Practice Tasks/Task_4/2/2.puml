@@ -1,0 +1,12 @@
+@startuml
+
+abstract class Account {}
+
+class PersonalAccount {}
+
+class CompanyAccount {}
+
+Account <|-- PersonalAccount
+Account <|-- CompanyAccount
+
+@enduml

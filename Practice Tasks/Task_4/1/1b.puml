@@ -1,0 +1,15 @@
+@startuml
+
+interface Stack {
+  + push(obj: Element)
+  + pop(): Element
+  + reset()
+  {static} + createNew(): Stack
+}
+
+class Element {
+}
+
+Stack ..> Element
+
+@enduml

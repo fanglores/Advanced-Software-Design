@@ -1,0 +1,7 @@
+@startuml
+
+class ListStack {
+  - arr: Element[1..*] {ordered, non-unique}
+}
+
+@enduml
