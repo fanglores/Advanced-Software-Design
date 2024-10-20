@@ -19,21 +19,31 @@ The project should provide means to define API schema using Custom Resource Defi
 
 4. В задаче API Gateway != k8s Gateway API. На k8s Gateway API можно смотреть, можно использовать на базе nginx-gateway-fabric или другого OSS сертифицированного CNCF. Нужен не только роутинг к сервисам. Нужна генерерация OpenAPIv3 схемы на лету из метаданных, описания как ресурса CRD или кода (с помощью доп библиотеки) ML сервиса. ML сервис - это решение задачи сервинга (serving) моделей. Считайте, что все такие сервисы должны иметь API, построенный по общим правилам (входы, выходы, типы данных, авторизацмя и т п). А разработчик модели пишет только модель, но не сервис. Ценность в том, что создаваемая gateway собирает и публикует API в едином виде для размещаемых сервисов, сохраняя совместимость с нестандартными сервисами. Так что DevOps-ы при развертывании уже не участвуют в определении и развертывании API.
 
-5. ML разработчик решает какую-то прикладную задачу. А значит чистым ml фреймворком ему не обойтись. Разные методы одного ml сервиса могут делать разные истории или разные шаги истории, которым нужна одна и та же модель
+5. ML разработчик решает какую-то прикладную задачу. А значит чистым ml фреймворком ему не обойтись. Разные методы одного ml сервиса могут делать разные истории или разные шаги истории, которым нужна одна и та же модель.
+
+6. У вас может быть библиотека сервинга, которая оборачивает модель или код inference в сервис и анализирует этот код.
 
 ## Детальное описание задачи
-Разрабатываемый Self Documenting API Gateway представляет собой ресурс Kubernetes, расширяющий функции Ingress, подобно K8S Gateway API. Эта реализация отличается направленностью на использование совместно с ML-моделями и ML-сервисами, а также главной функцией - автоматическая генерация OpenAPI-схемы исходя из CRD и исходного кода.
+Разрабатываемый Self Documenting API Gateway представляет собой платформу для развертывания, публикации и управления моделями машинного обучения в Kubernetes. Состоит из ресурсов K8S.
 
 ### Рассмотрение кандидатов в фичи
 1. Маршрутизация запросов. Самая стандартная функция базового K8S [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/). Реверс-прокси направляет внешний трафик к требуемым K8S-сервисам.
 Примеры: Существуют примеры [Gateway API](https://gateway-api.sigs.k8s.io/implementations/), самые известные HaProxy, Istio, Ambassador Ingress. Также на их основе, [Seldon Core](https://docs.seldon.io/projects/seldon-core/en/latest/workflow/github-readme.html) умеет публиковать ML-модели сразу с API маршрутами.
-2. Балансировка нагрузки. Вообще Kubernetes осуществляет её при помощи K8S-[сервисов](https://kubernetes.io/docs/concepts/services-networking/service/), но не Ingress.
+2. Балансировка нагрузки. Вообще Kubernetes осуществляет её при помощи K8S-[сервисов](https://kubernetes.io/docs/concepts/services-networking/service/), но не Ingress. Как правило настраивается весами.
 Примеры: [Istio](https://istio.io/latest/docs/concepts/traffic-management/). Ambassador в [Seldon Core](https://docs.seldon.io/projects/seldon-core/en/latest/ingress/ambassador.html).
-3. Аудит, логирование. Расширение логов базового nginx.
+3. Аудит, логирование. Расширение логов базового nginx. В перспективе интеграция с инструментами хранения и ротации логов, таких как ELK Stack, Fluentd.
 Примеры: [HaProxy](https://www.haproxy.com/blog/logging-with-the-haproxy-kubernetes-ingress-controller)
-4. SSO. Авторизация. Нестандартная функция Ingress, добавляемая Gateway API. Позволяет регулировать доступ к API, используя инструменты аутентификации.
+4. SSO. Авторизация. Нестандартная функция Ingress, добавляемая Gateway API. Позволяет регулировать доступ к API, используя инструменты аутентификации, например OAuth, JWT.
 Примеры: [HaProxy](https://www.getambassador.io/docs/edge-stack/latest/howtos/ext-filters), [Istio](https://istio.io/latest/docs/tasks/security/).
 5. Валидация запросов. Непопулярная функция, осуществляющая верификацию запросов к API в соответствии с OpenAPI-схемой. Очень удачно сочетается с функцией автогенерации схемы.
 Примеры: [Yandex API Gateway](https://yandex.cloud/ru/docs/api-gateway/concepts/extensions/validator?utm_referrer=https%3A%2F%2Fwww.google.com%2F).
-6. Кэширование ответов. Реализована в простой форме в nginx.
+6. Кэширование ответов. Уже реализована в простой форме в nginx.
 Примеры: [K8S Ingress](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/annotations/#server-snippet)
+7. Модульное развертывание моделей. Поддержка развертывания различных моделей машинного обучения (ML), написанных на разных языках программирования и использующих различные фреймворки (TensorFlow, PyTorch, Scikit-learn и т.д.).
+Примеры: [Seldon Core](https://docs.seldon.io/projects/seldon-core/en/latest/workflow/github-readme.html)
+8. Контейнеризация. Возможность упаковки ML-моделей в контейнеры с использованием Docker. Генерирация класса с функциями ML. Настраивается на основе CRD.
+Примеры: [Language wrapper](https://docs.seldon.io/projects/seldon-core/en/latest/wrappers/language_wrappers.html), [KServe](https://github.com/kserve/kserve).
+9. Развёртывание сервиса. Автоматизация развертывания моделей из специальных хранилищ и систем контроля версий в Kubernetes-кластерах на основе стандартных Kubernetes объектов (Deployments, Services, Pods).
+Примеры: [Deployment](https://docs.seldon.io/projects/seldon-core/en/latest/workflow/overview.html#seldondeployment-crd).
+10. Автодокументирование моделей. Генерации OpenAPI спецификаций для моделей путём описания моделей при деплое из полей ресурса, либо путём чтения исходного кода (описания класса) контейнезированного приложения.
+Примеры: [OpenAPI](https://docs.seldon.io/projects/seldon-core/en/latest/reference/apis/openapi.html), [Metadata](https://docs.seldon.io/projects/seldon-core/en/latest/reference/apis/metadata.html).
