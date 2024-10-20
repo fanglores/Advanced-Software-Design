@@ -1,5 +1,3 @@
-!Task 2  
-
 ## KEA (Kubernetes Empowerer via API)
 <img src="product_img.jpg" alt="Product Image" width="300"/>
 <sup> Kea parrot. Picture from: Kea the Clever Clown of the Alps, Milford Sound </sup>
