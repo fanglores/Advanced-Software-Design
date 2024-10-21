@@ -1,0 +1,16 @@
+@startuml
+actor "API Consumer" as consumer
+actor "DevOps Engineer" as devops
+
+usecase "Send Request to Gateway" as uc1
+usecase "Forward Request to K8s Service" as uc2
+usecase "Process Request and Send Response" as uc3
+usecase "Return Response to Consumer" as uc4
+
+consumer --> uc1
+uc1 --> uc2
+uc2 --> uc3
+uc3 --> uc4
+uc4 --> consumer
+devops --> uc2
+@enduml
