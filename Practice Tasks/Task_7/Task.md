@@ -1,4 +1,4 @@
-#Task 7  
+# Task 7  
 
 Solve behavior modeling tasks using UML2. This is a research and self-study activity. You will need to find out about new concepts using the references and links provided.
 

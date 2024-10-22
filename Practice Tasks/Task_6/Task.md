@@ -1,4 +1,4 @@
-#Task 6  
+# Task 6  
 
 Develop an interaction model for your product. Use use cases from Task 5 and apply CRC modeling technique to devise collaborations and interaction sequences.
 
