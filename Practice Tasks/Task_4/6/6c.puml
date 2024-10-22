@@ -1,0 +1,10 @@
+@startuml
+left to right direction
+
+actor Cashier
+rectangle VendingMachine {
+    usecase ChangeWater
+}
+
+Cashier --> ChangeWater : {if Loader isn't unavailable}
+@enduml

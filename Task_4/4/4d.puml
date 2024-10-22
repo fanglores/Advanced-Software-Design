@@ -1,9 +1,0 @@
-@startchen
-
-entity Task {
-  ID <<key>>
-  Text
-  Correct Answer
-}
-
-@endchen

@@ -1,0 +1,13 @@
+@startuml
+actor "ML Engineer" as mlengineer
+actor "DevOps Engineer" as devops
+
+usecase "Select Model Version for Deployment" as uc1
+usecase "Automate Deployment to K8s Cluster" as uc2
+usecase "Create Services and Pods" as uc3
+
+mlengineer --> uc1
+uc1 --> uc2
+uc2 --> uc3
+devops --> uc2
+@enduml

@@ -1,0 +1,16 @@
+@startuml
+actor User
+
+rectangle OnlineTranslator {
+    usecase SetLanguages
+    usecase Translate [
+      Translate
+      ---
+      Extension Point: specifyLanguages
+    ]
+
+
+User -right-> Translate
+Translate <.right. SetLanguages : <<extend>> {if lang isn't specified}
+}
+@enduml

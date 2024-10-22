@@ -1,3 +1,5 @@
+!Task 2  
+
 ## KEA (Kubernetes Empowerer via API)
 <img src="product_img.jpg" alt="Product Image" width="300"/>
 <sup> Kea parrot. Picture from: Kea the Clever Clown of the Alps, Milford Sound </sup>
@@ -77,6 +79,7 @@ Generates OpenAPI specifications for models by describing them during deployment
 - Kubernetes integration  
 - Autonomous components 
 - Predefined ML Frameworks (e.g. Tensorflow, Keras, PyTorch, etc.). For custom services API is specified via MLRun library
+- OAuth and JWT are used for SSO
 
 ### Non-functional requirements
 - Inner network response timeout: 5s

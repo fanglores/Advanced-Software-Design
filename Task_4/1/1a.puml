@@ -1,8 +1,0 @@
-@startuml
-
-interface Stack {
-  + reset()
-  {static} + createNew(): Stack
-}
-
-@enduml

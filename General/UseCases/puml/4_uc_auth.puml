@@ -1,0 +1,13 @@
+@startuml
+actor "API Consumer" as consumer
+actor "Security Specialist" as security
+
+usecase "Check Authorization Token" as uc1
+usecase "Redirect to SSO Login" as uc2
+usecase "Forward Authorized Request" as uc3
+
+consumer --> uc1
+uc1 --> uc2 : Token Invalid
+uc1 --> uc3 : Token Valid
+security --> uc1
+@enduml

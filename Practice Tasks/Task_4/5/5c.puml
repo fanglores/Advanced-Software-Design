@@ -1,0 +1,14 @@
+@startuml
+actor User
+actor ExperiencedUser
+
+rectangle OnlineTranslator {
+    usecase ProposeTranslation
+    usecase TranslateText
+
+
+ExperiencedUser --|> User
+ExperiencedUser -right-> ProposeTranslation
+ProposeTranslation --> TranslateText
+}
+@enduml

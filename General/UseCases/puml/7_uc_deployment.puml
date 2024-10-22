@@ -1,0 +1,13 @@
+@startuml
+actor "ML Engineer" as mlengineer
+actor "DevOps Engineer" as devops
+
+usecase "Upload Model to Repository" as uc1
+usecase "Deploy Model into K8s Cluster" as uc2
+usecase "Make Model Available for Requests" as uc3
+
+mlengineer --> uc1
+uc1 --> uc2
+uc2 --> uc3
+devops --> uc2
+@enduml

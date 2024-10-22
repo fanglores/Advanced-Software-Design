@@ -1,0 +1,11 @@
+@startuml
+actor "DevOps Engineer" as devops
+actor "Security Specialist" as security
+
+usecase "Log Request and Response" as uc1
+usecase "Push Logs to External System" as uc2
+
+devops --> uc1
+security --> uc2
+uc1 --> uc2
+@enduml

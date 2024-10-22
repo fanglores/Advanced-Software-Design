@@ -1,0 +1,8 @@
+@startuml
+
+class ListStack {
+  - increment: integer {read-only}
+  # resize(newSize: integer)
+}
+
+@enduml
