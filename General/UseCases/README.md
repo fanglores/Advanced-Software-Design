@@ -13,7 +13,7 @@
 * Postconditions: The request is routed correctly, and a response is delivered.
 * Failure Conditions: Target service not found, network issues.
 * Diagram:
-![UC Request Routing](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/tsaturyan/General/UseCases/puml/1_uc_request_routing.puml)
+![UC Request Routing](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/master/General/UseCases/puml/1_uc_request_routing.puml)
 
 ## 2. Load Balancing
 * Actors:
@@ -27,7 +27,7 @@
 * Postconditions: Requests are balanced across services, responses are received.
 * Failure Conditions: No healthy instances available, misconfiguration in load balancing rules.
 * Diagram:
-![UC Load Balancing](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/tsaturyan/General/UseCases/puml/2_uc_load_balancing.puml)
+![UC Load Balancing](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/master/General/UseCases/puml/2_uc_load_balancing.puml)
 
 ## 3. Audit and Logging
 * Actors: Security Specialists, DevOps Engineers
@@ -39,7 +39,7 @@
 * Postconditions: Logs are stored securely for audit purposes.
 * Failure Conditions: Logging system not accessible, log data corrupted.
 * Diagram:
-![UC Audit and Logging](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/tsaturyan/General/UseCases/puml/3_uc_logging.puml)
+![UC Audit and Logging](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/master/General/UseCases/puml/3_uc_logging.puml)
 
 ## 4. SSO (Single Sign-On) and Authorization
 * Actors: API consumers, Security Specialists
@@ -53,7 +53,7 @@
 * Postconditions: User is authenticated and authorized, session maintained.
 * Failure Conditions: Token expired, unauthorized access.
 * Diagram:
-![UC Authorization](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/tsaturyan/General/UseCases/puml/4_uc_auth.puml)
+![UC Authorization](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/master/General/UseCases/puml/4_uc_auth.puml)
 
 ## 5. Request Validation
 * Actors: API consumers, DevOps Engineers
@@ -66,7 +66,7 @@
 * Postconditions: Only valid requests reach the services.
 * Failure Conditions: Request does not conform to the schema.
 * Diagram:
-![UC Request Validation](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/tsaturyan/General/UseCases/puml/5_uc_request_validation.puml)
+![UC Request Validation](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/master/General/UseCases/puml/5_uc_request_validation.puml)
 
 ## 6. Response Caching
 * Actors: API consumers, DevOps Engineers
@@ -79,7 +79,7 @@
 * Postconditions: Response time is reduced for cached requests.
 * Failure Conditions: Cache miss, outdated cached data.
 * Diagram:
-![UC Response Caching](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/tsaturyan/General/UseCases/puml/6_uc_response_caching.puml)
+![UC Response Caching](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/master/General/UseCases/puml/6_uc_response_caching.puml)
 
 ## 7. Modular Deployment of Models
 * Actors: ML Engineers, DevOps Engineers
@@ -91,7 +91,7 @@
 * Postconditions: The model is deployed and accessible.
 * Failure Conditions: Model not properly containerized, deployment failure.
 * Diagram:
-![UC Modular Deployment of Models](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/tsaturyan/General/UseCases/puml/7_uc_deployment.puml)
+![UC Modular Deployment of Models](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/master/General/UseCases/puml/7_uc_deployment.puml)
 
 ## 8. Containerization
 * Actors: ML Engineers, DevOps Engineers
@@ -103,7 +103,7 @@
 * Postconditions: Model is successfully containerized and running in the K8s cluster.
 * Failure Conditions: Containerization fails due to code errors or missing dependencies.
 * Diagram:
-![UC Containerization](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/tsaturyan/General/UseCases/puml/8_uc_containerization.puml)
+![UC Containerization](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/master/General/UseCases/puml/8_uc_containerization.puml)
 
 ## 9. Service Deployment
 * Actors: ML Engineers, DevOps Engineers
@@ -115,7 +115,7 @@
 * Postconditions: The model is deployed and available through an endpoint.
 * Failure Conditions: Deployment fails due to configuration issues or resource limits.
 * Diagram:
-![UC Service Deployment](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/tsaturyan/General/UseCases/puml/9_uc_service_deployment.puml)
+![UC Service Deployment](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/master/General/UseCases/puml/9_uc_service_deployment.puml)
 
 ## 10. Model Auto-Documentation
 * Actors: API consumers, ML Engineers
@@ -128,4 +128,4 @@
 * Postconditions: API consumers can view documentation to interact with the model.
 * Failure Conditions: Schema generation fails, documentation not accessible.
 * Diagram:
-![UC Model Auto-Documentation](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/tsaturyan/General/UseCases/puml/10_uc_documentation.puml)
+![UC Model Auto-Documentation](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/master/General/UseCases/puml/10_uc_documentation.puml)
