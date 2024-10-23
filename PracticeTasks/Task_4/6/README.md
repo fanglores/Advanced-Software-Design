@@ -8,7 +8,7 @@
 
 ### Task 6b
 
-![Class Diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/master/Task_4/6/6b.puml)
+![Class Diagram](http://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/fanglores/Advanced-Software-Design/refs/heads/master/Practice%20Tasks/Task_4/6/6b.puml)
 
 ### Task 6c
 
