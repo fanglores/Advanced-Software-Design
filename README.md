@@ -2,11 +2,23 @@
 <img src="product_img.jpg" alt="Product Image" width="300"/>
 <sup> Kea parrot. Picture from: Kea the Clever Clown of the Alps, Milford Sound </sup>
 
+## Contents
+- [Task description](#self-documenting-api-gateway) 
+- [Team members](#team-k8c) 
+- [Product description](#product-description)
+- [Similar systems](#similar-systems)
+- [Stakeholders](#stakeholders)
+- [Business Requirements](#business-requirements)
+  - [Features](#features)
+  - [Constrains](#constrains)
+  - [Implementation rules](#implementation-rules)
+  - [Non-functional requirements](#non-functional-requirements)
+
 ### Self-documenting API gateway
 A typical ingress implementation in k8s forwards incoming traffic to a particular application. An improved API Gateway would integrate Single Sign-On, automatic OpenAPI schema generation, request validation and response caching. The goal of the project is to develop such a Kubernetes operator to extend existing ingress implementations to API Gateway. The project should provide means to define API schema using Custom Resource Definitions in K8s directly and generate them from the source code following a set of conventions.
 
-## Team "K8C"
-### Team members:
+### Team "K8C"
+#### Team members:
 - Dandamaev Gadji
 - Smolkin Mikhail
 - Tsaturyan Konstantin
@@ -35,7 +47,7 @@ IT Companies that use Kubernetes, as our clients, e.g.:
 - MTS
 - Ozon
 
-## Busibess requirements:
+## Business requirements:
 ### Features
 1. Request Routing  
 The basic function of K8s Ingress. A reverse proxy directs external traffic to the required specific K8s services.  
