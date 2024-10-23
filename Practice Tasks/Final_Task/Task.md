@@ -22,24 +22,20 @@ Video report is mandatory for the final task 1.
 Overall grading criteria for the final task 1.
 
 ### Excellent grade (9)
-
 Project contains no errors, has all parts, and is larger than required for the team size.
 Team successfully defended the project, and members’ contributions are clearly stated.
 
 
 ### Good grade (7)
-
 Project contains no major errors, has all parts, and is large enough for the team size.
 Team is able to answer questions on the project, and members’ contributions are clearly stated.
 
 
 ### Satisfactory grade (5)
-
 Project contains no major errors, has most parts, may not be as large as needed for the team size.
 Team is able to answer questions on the project, and members’ contributions are not clearly stated.
 
 
 ### Failed grade (<4)
-
 Project contains major errors, missing many parts, too small for the team.
 Team cannot answer questions on the project or members’ contributions are not clearly stated.

@@ -21,3 +21,12 @@ NOTE: keep your repo up to date with task reports
 
 See the task report template
 https://tiny.cc/asd-template-draft 
+
+
+Quick notation
+– S : stores information
+– I : has interface to change stored information;
+– A : information has structure;
+– O : interface has several operations
+– U : attributes and operations are shared by all instances (universal);
+– T : essential for a complete/well-formed model
