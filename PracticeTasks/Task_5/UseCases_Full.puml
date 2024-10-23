@@ -1,0 +1,33 @@
+@startuml
+
+actor "ML Engineer" as mlengineer
+actor "API Consumer" as apiconsumer
+actor "Security Specialist" as security
+
+rectangle "Kubernetes" as K8s {
+  usecase "Load Balancing" as uc3
+  usecase "Collect Logs" as uc4
+  usecase "Publish Model" as uc8
+  usecase "Deploy Model" as uc7
+  rectangle "API Gateway" as System {
+    usecase "Send Request" as uc1
+    usecase "Forward Request to K8s Service" as uc2
+    usecase "Authenticate" as uc5
+    usecase "Cache Response" as uc6
+    usecase "OpenAPI Schema Generation" as uc9
+  }
+}
+
+uc1 -- apiconsumer
+uc1 ..> uc2 : <<includes>>
+uc3 ..> uc2 : <<extends>>
+uc4 -U- security
+uc5 -- apiconsumer
+uc6 ..> uc2 : <<extends>>
+uc7 -U- mlengineer
+uc8 -U- mlengineer
+uc9 -- apiconsumer
+
+apiconsumer -U[hidden]- uc2
+
+@enduml

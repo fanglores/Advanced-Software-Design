@@ -1,4 +1,4 @@
-Glossary by Abbot's method
+## Glossary by Abbot's method
 - API Gateway
 - Service
 - Pod
@@ -22,3 +22,14 @@ Glossary by Abbot's method
 - Cache timeout
 - Invalidate Cache
 - Containerize
+
+## Candidate classes:
+- Request Router
+- Load Balancer
+- Request Validator
+- Response Cacher
+- Authentication Provider
+- System Logger
+- OpenAPI Generator
+- Service Deployer
+- Model Containerizer
