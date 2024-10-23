@@ -1,0 +1,32 @@
+@startuml
+actor "API Consumer" as consumer
+actor "DevOps Engineer" as devops
+actor "ML Engineer" as mleng
+
+rectangle "Kubernetes" as K8s {
+  rectangle "K8s Service" as K8Service {
+  }
+
+  rectangle "API Gateway" as System {
+    usecase "Send Request" as uc1
+    usecase "Forward Request to K8s Service" as uc2
+    usecase "Send Response" as uc3
+    usecase "Configure Load balancing" as uc4
+  }
+
+  usecase "Load balancing" as uc5
+}
+
+consumer --> uc1
+uc1 ..> uc2 : <<includes>>
+uc2 <.. uc5 : <<extends>>
+uc5 -[hidden]-> K8Service
+uc2 -[hidden]-> uc3
+uc2 --> K8Service
+K8Service --> uc3
+uc3 --> consumer
+
+uc4 <-- devops
+uc4 <-- mleng
+
+@enduml

@@ -1,0 +1,19 @@
+@startuml
+
+actor "API Consumer" as consumer
+actor "ML Engineer" as mlengineer
+
+rectangle "Kubernetes" as K8s {
+  usecase "Publish Model" as uc1
+  rectangle "API Gateway" as System {
+    usecase "Generate OpenAPI Specification" as uc2
+    usecase "Provide API Documentation" as uc3
+  }
+}
+
+mlengineer -R-> uc1
+uc1 <.R. uc2 : <<extends>>
+uc2 <.. uc3 : <<includes>>
+consumer -R-> uc3
+
+@enduml
