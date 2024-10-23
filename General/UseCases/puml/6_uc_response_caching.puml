@@ -1,0 +1,15 @@
+@startuml
+
+actor "API Consumer" as consumer
+
+rectangle "Kubernetes" as K8s {
+  rectangle "API Gateway" as System {
+    usecase "Send Request to Gateway" as uc1
+    usecase "Cache Response if not cached" as uc2
+  }
+}
+
+consumer -R-> uc1
+uc1 --> uc2
+
+@enduml

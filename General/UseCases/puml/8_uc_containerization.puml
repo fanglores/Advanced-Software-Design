@@ -1,0 +1,17 @@
+@startuml
+
+actor "ML Engineer" as mlengineer
+
+rectangle "Kubernetes" as K8s {
+  rectangle "API Gateway" as System {
+    usecase "Containerize Model with Docker" as uc1
+    usecase "Enwrap model" as uc3
+  }
+  usecase "Deploy Container to K8s Cluster" as uc2
+}
+
+mlengineer -R-> uc1
+uc1 <.. uc2 : <<includes>>
+uc3 ..> uc1 : <<extends>>
+
+@enduml
