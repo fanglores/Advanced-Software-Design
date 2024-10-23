@@ -1,15 +1,2 @@
-Prior Use Cases:
-- [Containerization](../Task_5/UseCases/8_uc_containerization.puml)
-- [Service Deployment](../Task_5/UseCases/9_uc_service_deployment.puml)
-- [API Documentation](../Task_5/UseCases/10_uc_documentation.puml)
-
-Prior candidate classes:
-- 1
-- 2
-- 3
-
-Class interactions and responsibilities:
-| | |
-
-Cooperations table:
-| | |
+# CRC Cards
+![CRC Card](https://github.com/fanglores/Advanced-Software-Design/PracticeTasks/Task_6/res/crc_k8c.png?raw=true)
