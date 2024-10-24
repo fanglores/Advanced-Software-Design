@@ -1,0 +1,41 @@
+@startuml
+[*] --> ReceivingModel : Containerization()
+
+ReceivingModel --> ChoosingServerType : Model received
+
+state f <<fork>>
+ChoosingServerType --> f
+
+state "Predefined server enwrapping" as enwrapping_predefined {
+    [*] --> ParsingCRD
+    ParsingCRD --> UsingPredefinedServer : Type is defined
+    ParsingCRD : do / parseCRD()
+    UsingPredefinedServer --> [*]
+    UsingPredefinedServer : do / enwrapServer(type)
+}
+state "Custom server enwrapping" as enwrapping_custom {
+    [*] --> ParsingSourceCode
+    ParsingSourceCode --> UsingCustomServer
+    ParsingSourceCode : do / parseClassModel()
+    UsingCustomServer --> [*]
+    UsingCustomServer : do / enwrapServer()
+}
+
+state j <<join>>
+f --> enwrapping_predefined
+f --> enwrapping_custom
+
+enwrapping_predefined --> j 
+enwrapping_custom --> j
+
+j --> Containerizing
+
+Containerizing --> Publishing : Model is containeried
+Publishing --> [*] : Published to registry
+
+state ReceivingModel : do/receiveModel()
+state ChoosingServerType : do/selectServerType()
+state Containerizing : do/containerizeWithDocker()
+state Publishing : do/publishToRegistry()
+
+@enduml

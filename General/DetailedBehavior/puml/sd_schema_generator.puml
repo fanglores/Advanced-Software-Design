@@ -1,0 +1,32 @@
+@startuml
+[*] --> Idle : Initialization
+
+Idle --> ReceivingInput : CreateSchema()
+
+GeneratingSchema --> SchemaGenerationSuccess : Schema created successfully
+GeneratingSchema --> SchemaGenerationFailure : Schema generation failed
+
+SchemaGenerationSuccess --> StoringDocumentation : Store schema and API docs
+StoringDocumentation --> Idle : Schema stored
+
+SchemaGenerationFailure --> Idle : Process ends with failure
+
+state Idle
+state ReceivingInput {
+  state c <<choice>>
+  [*] --> c
+  state ParsingSourceCode : do/parseSourceCode()
+  state ParsingCRD : do/parseCRD()
+  c --> ParsingSourceCode : If input is Source Code
+  c --> ParsingCRD : If input is CRD
+  ParsingCRD --> [*]
+  ParsingSourceCode --> [*]
+}
+
+ReceivingInput --> GeneratingSchema
+state GeneratingSchema : do/generateSchema()
+state SchemaGenerationSuccess : do/logSuccess()
+state SchemaGenerationFailure : do/logFailure()
+state StoringDocumentation : do/storeSchemaAndDocs()
+
+@enduml

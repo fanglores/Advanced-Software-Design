@@ -1,0 +1,36 @@
+@startuml
+
+[*] --> Idle : Initialization
+[*] <-- Idle : Termination
+
+Idle --> ValidatingCRD : Deploy()
+
+state ValidatingCRD : do / validateSpec()
+
+ValidatingCRD --> CreatingResources : Spec valid
+ValidatingCRD --> Idle : Spec invalid
+
+state CreatingResources : do / createK8SResources()
+
+CreatingResources --> Deploying : Resources created
+
+state Deploying : do / deployComponents(scale)
+
+Deploying --> Running : Deployment successful
+
+state Running <<running>> : do / monitorDeployment()
+
+Running --> Running : Scale request
+
+Deploying --> Failed : Deployment failed
+
+state Failed <<failed>> : do / handleFailure()
+
+Failed --> Terminating : Trigger termination
+Running --> Terminating : External termination request
+
+state Terminating <<terminated>> : do / terminateDeployment()
+
+Terminating --> Idle : Ready for next deployment
+
+@enduml

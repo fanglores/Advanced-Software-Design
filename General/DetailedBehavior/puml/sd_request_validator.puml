@@ -1,0 +1,26 @@
+@startuml
+[*] --> Idle : Initialization
+[*]<-- Idle : Termination
+
+Idle --> ReceivingRequest : Receive Request
+ReceivingRequest --> Validating : Prepare for validation
+state c <<choice>>
+Validating --> c
+c --> ValidationSuccess : Request valid
+c --> ValidationFailure : Request invalid
+
+ValidationSuccess --> Idle : Request forwarded to service
+ValidationFailure --> Idle : Request rejected
+
+Idle --> UploadingNewValidationRules : New rules uploaded
+UploadingNewValidationRules --> Idle : Rules updated
+
+
+state ReceivingRequest : do / parseRequest()
+state Validating : do / validateRequest()
+state ValidationSuccess : do / forwardRequest()
+state ValidationFailure : entry / rejectRequest()
+state ValidationFailure : exit / logFailure()
+state UploadingNewValidationRules : do / getSchema()
+
+@enduml
