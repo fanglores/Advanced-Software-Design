@@ -1,0 +1,83 @@
+@startuml
+
+class "<<root>> API Gateway" as apigateway
+
+class "<<service>> Request Router" as router {
+  +Route[] routes
+  +result_t Forward()
+}
+class "<<service>> Load Balancer" as balancer {
+  +Float[] weights
+}
+class "<<service>> Request Validator" as validator {
+  +result_t Validate()
+}
+class "<<service>> Response Cacher" as cacher {
+  +result_t GetResponse()
+}
+class "<<service>> Authentication Provider" as auth {
+  +String[] rbacRules
+  +result_t Authenticate(String token)
+}
+class "<<service>> System Logger" as logger {
+  +String[] loggingRules
+  +Logs[] RetrieveLogs()
+}
+class "<<service>> OpenAPI Generator" as generator {
+  +result_t CreateSchema()
+}
+class "<<service>> Service Deployer" as deployer {
+  +result_t Deploy()
+}
+class "<<service>> Model Containerizer" as containerizer {
+  +result_t containerizeModel()
+}
+
+class "<<entity>> Model" as model
+class "<<entity>> Service" as service
+class "<<entity>> Pod" as pod
+class "<<entity>> Kubernetes" as kubernetes
+
+' Supplementary classes
+class "<<value>> Log" as log {
+  +String data
+}
+class "<<value>> OpenAPI Schema" as apischema
+class "<<value>> SSO token" as sso {
+  +String token
+  +Datetime login_time
+}
+class "<<value>> Cache" as cache {
+  +String response
+  +Datetime time
+}
+
+' API Gateway relations
+apigateway "1" -right- "1" kubernetes
+apigateway "1" *-up- "1" router
+apigateway "1" *-down- "1" validator
+apigateway "1" *-left- "1" cacher
+apigateway "1" *-up- "1" containerizer
+apigateway "1" *-down- "1" generator
+apigateway "1" *-down- "1" logger
+apigateway "1" *-down- "1" deployer
+apigateway "1" *-down- "1" balancer
+apigateway "1" *-down- "1" auth
+
+' Kubernetes relations
+kubernetes "1" *- "*" service
+service "1" o- "*" pod
+pod "1" *- "1" model
+kubernetes -down- logger
+kubernetes -down- deployer
+kubernetes -down- balancer
+kubernetes -up- router
+
+' Supplementary relations
+logger "1" <-- "*" log
+validator "1" -- "*" apischema
+apischema "*" -- "1" generator
+auth "1" <-- "*" sso
+cacher "1" <-up- "*" cache
+
+@enduml
