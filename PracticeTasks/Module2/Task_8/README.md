@@ -24,7 +24,20 @@ Here's a comprehensive comparison of the solutions for Problem A and Problem B u
 For the KWIC task, **Pipes-and-Filters** is the best choice due to its modularity, flexibility, and support for parallel processing. This method allows for easy maintenance and scalability, making it ideal for handling complex or large datasets in KWIC.
 
 ### Comparison Table
-#### KWIC
+#### 8Qs
+| **Method** | **Advantages** | **Disadvantages** |
+|------------|----------------|-------------------|
+| **1. Abstract Data Types (ADT)** | - **Encapsulation:** Encapsulates board state and queen placement logic within an object, leading to clean and modular code that is easy to understand and maintain. | - **Overhead for Simple Tasks:** Using ADTs introduces some complexity in setup, as extra classes and methods may be overkill for solving a straightforward problem like 8 Queens. |
+| | - **Reusability:** The design can easily be adapted to larger boards or different configurations of the N-Queens problem without extensive modification. | - **Potential Performance Impact:** The object-oriented approach might be slightly slower for high-performance applications due to additional function calls and encapsulation, compared to procedural methods. |
+| **2. Main/Subroutine (Shared Data)** | - **Simplicity:** Separates tasks (e.g., solution computation in `eight_queens.py` and output in `output_handler.py`), making it straightforward and easy to follow. | - **Limited Scalability:** A single-threaded approach may restrict performance on larger boards or complex requirements, as all processing is confined to a single function call flow. |
+| | - **Efficiency for Small Boards:** Direct backtracking solves standard 8x8 boards efficiently without the need for parallelism or asynchronous handling. | - **Debugging Complexity:** Shared state in a recursive function (e.g., `backtrack` in `eight_queens.py`) can make error tracking difficult, especially if adjustments are needed for different board sizes. |
+| **3. Pipes-and-Filters** | - **Modularity and Parallelism:** Each processing stage—input, placement, solution filtering, and output—is isolated in a separate process, making debugging and scaling more manageable. | - **Resource-Intensive:** Inter-process communication via pipes (`multiprocessing.Pipe()` in `main.py`) requires substantial resources and may be less efficient than single-threaded approaches for small tasks like 8x8 boards. |
+| | - **Ease of Maintenance:** Individual filters (e.g., `placement_filter.py`) can be modified or tested independently without impacting other parts of the pipeline. | - **Communication Complexity:** Managing data flow through pipes (e.g., `input_pipe`, `placement_pipe`) can introduce complexity, and debugging inter-process communication may be challenging. |
+| **4. Implicit Invocation (Event-Driven)** | - **Flexibility and Extensibility:** The event-driven approach (using `EventManager` in `event_manager.py`) makes it easy to add new features, such as additional outputs or events, without modifying core logic. | - **Excessive Complexity for Simple Tasks:** The event-driven model introduces additional overhead for a task that can be solved efficiently with a simpler, linear method. |
+| | - **Responsive to Change:** Events such as `QUEEN_PLACED_EVENT` and `FINISHED_EVENT` facilitate modularity, as new subscribers can be added for additional functionality without altering existing code. | - **Debugging Difficulty:** Asynchronous events complicate the debugging process, making it harder to trace the sequence of actions, which can be unnecessary for straightforward problems like 8 Queens. |
+
 #### Summary
+For the **8 Queens** problem, the **Main/Subroutine (Shared Data)** method offers the optimal balance between simplicity and effectiveness. Its direct backtracking approach is efficient for standard-sized boards (8x8) without the added complexity or resource overhead of ADT, Pipes-and-Filters, or Event-Driven designs. This method's straightforward structure makes it easy to implement, maintain, and adapt for small to medium-sized N-Queens configurations.
+
 
 Generated via ChatGPT-4o using promt "Compare 4 methods for KWIC(/8Qs) problem, basing on the source code of the solution: Method 1 <source code from repo> ..."
