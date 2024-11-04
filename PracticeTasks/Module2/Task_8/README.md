@@ -1,38 +1,54 @@
-Here’s a comprehensive comparison of the solutions for Problem A and Problem B using Method 2 (Main/Subroutine with stepwise refinement) and Method 4 (Event-Driven). The comparison table summarizes the criteria you provided, along with justifications and explanations for each solution.
+Here's a comprehensive comparison of the solutions for Problem A and Problem B using four methods: **1st (Abstract Data Types)**, **2nd (Main/Subroutine with Stepwise Refinement)**, **3rd (Pipes-and-Filters)**, and **4th (Event-Driven)**. This comparison is structured around several criteria.
+
+---
 
 ### Comparison Table
 
-|Criteria|Method 2 (Problem A & B)|Method 4 (Problem A & B)|
-|---|---|---|
-|**a) Easier to change the implementation algorithm**|Changing the algorithm involves modifying the logic within a single file (`main.py`). This can be straightforward but may require careful consideration of interdependencies within the modules.|The event-driven architecture makes it easier to swap out or modify algorithms by adjusting event handlers or adding new ones. Each module can evolve independently as long as events are properly managed.|
-|**b) Easier to change data representation**|Changing data representation requires updating the logic across all functions that process data, leading to potential widespread changes in multiple modules.|The modular design allows for easier changes to data representation as each module responds to events independently. Only the event-triggered functions need adjustment.|
-|**c) Easier to add additional functions**|Adding functions may require integrating them into the existing control flow and ensuring they interact correctly with existing functions. This can introduce complexity in coordination.|New functions can be easily added as separate event handlers without altering existing code, promoting scalability and reducing risk of side effects.|
-|**d) More performant**|Performance is straightforward as the execution is linear, but might be less optimal if the algorithm becomes complex.|While potentially less performant due to event handling overhead, it offers asynchronous capabilities that can enhance performance under certain conditions (e.g., concurrent events).|
-|**e) Which solution would you reuse?**|Method 2 may be preferable for simple tasks due to its straightforward linear flow and easier debugging.|Method 4 is more reusable for larger, more complex systems due to its flexibility and modularity, especially when the application may grow in complexity or feature set.|
+| **Criteria**                                      | **Method 1 (ADT)**                                                                                                             | **Method 2 (Main/Subroutine)**                                                                                    | **Method 3 (Pipes-and-Filters)**                                                                                           | **Method 4 (Event-Driven)**                                                                                                           |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| **Easier to change the implementation algorithm** | Encapsulation simplifies changes to implementation within data types, but changes in ADT operations may impact all uses.       | Requires modifying logic within a single file, straightforward but with possible interdependencies to manage.     | Changes in one filter can be made without affecting others, as long as the input/output contract remains the same.         | Event-driven structure enables easy swapping or modification of algorithms through event handlers with minimal impact on other parts. |
+| **Easier to change data representation**          | Data changes require modifications in the ADT definitions and possibly all dependent modules, making it somewhat cumbersome.   | Data representation changes require updating multiple functions, potentially leading to widespread modifications. | Each filter independently processes data, allowing data representation changes within individual filters with less impact. | Data representation changes are isolated to individual event handlers, making it easier to manage independently.                      |
+| **Easier to add additional functions**            | Adding functions is straightforward if they align with the ADT structure, but additional types may require structural changes. | Adding functions requires careful integration into the control flow, which can introduce complexity.              | Adding new filters or stages is straightforward and can be easily inserted into the pipeline.                              | New functions can be added as separate event handlers, promoting easy scalability without modifying existing code.                    |
+| **More performant**                               | ADT generally has good performance as each data type operates within controlled, predictable bounds.                           | Linear execution, good for simple and efficient performance in straightforward tasks.                             | Can have performance overhead due to data passing between filters, especially in sequential pipelines.                     | Event handling may introduce overhead, but asynchronous capabilities can enhance performance with concurrent events.                  |
+| **Which solution would you reuse?**               | Suitable for problems needing well-defined data structures and operations, where stability is prioritized.                     | Good for simpler tasks due to its linear flow and ease of debugging.                                              | Ideal for systems requiring sequential or parallel transformations, such as data processing pipelines.                     | Best for complex, scalable systems expected to evolve over time due to flexibility and modularity.                                    |
+
+---
 
 ### Justification and Explanation
 
-1. **Easier to Change Implementation Algorithm**:
+1. **Easier to Change Implementation Algorithm**
     
-    - **Method 2**: While you can change algorithms, any inter-module dependencies must be carefully managed.
-    - **Method 4**: The event-driven nature means you can adjust or swap out event handlers without affecting the overall system.
-2. **Easier to Change Data Representation**:
+    - **Method 1 (ADT)**: ADTs encapsulate data and behavior, so internal changes are straightforward if the external interface remains the same.
+    - **Method 3 (Pipes-and-Filters)**: Each filter operates independently, making it possible to adjust algorithms within a filter without impacting others, as long as input/output formats are maintained.
+    - **Method 4 (Event-Driven)**: Event-driven structure simplifies algorithm changes by enabling handler adjustments, allowing modular algorithm swapping.
+2. **Easier to Change Data Representation**
     
-    - **Method 2**: Changing how data is represented can lead to widespread modifications throughout the code, increasing risk and complexity.
-    - **Method 4**: Allows adjustments to data representation within individual modules without impacting other parts of the system as long as events are correctly defined.
-3. **Easier to Add Additional Functions**:
+    - **Method 1 (ADT)**: Changing data representations within ADTs requires changes within the ADT and, potentially, all usages, which can be complex if tightly coupled.
+    - **Method 3 (Pipes-and-Filters)**: Changes are contained within the specific filters, reducing the impact on the entire system.
+    - **Method 4 (Event-Driven)**: Data representation changes can be isolated to the event-triggered functions, minimizing impacts across modules.
+3. **Easier to Add Additional Functions**
     
-    - **Method 2**: New functions must be integrated into existing logic, which can complicate things if the main flow is intricate.
-    - **Method 4**: Functions can be added as separate event handlers, allowing for easy expansion without interfering with existing code.
-4. **Performance**:
+    - **Method 1 (ADT)**: New functions fit naturally if they’re encapsulated within an ADT but may require structural changes for new operations that don’t align with the current types.
+    - **Method 3 (Pipes-and-Filters)**: New filters can be added easily to the pipeline, making it simple to extend functionality.
+    - **Method 4 (Event-Driven)**: Additional functions can be added as new event handlers, allowing easy expansion and modular scaling.
+4. **Performance**
     
-    - **Method 2**: Generally more performant for straightforward tasks as it executes in a linear manner.
-    - **Method 4**: While potentially slower due to event handling overhead, it supports scalability and can improve performance through asynchronous processing.
-5. **Reusability**:
+    - **Method 1 (ADT)**: ADT has minimal overhead, performing well within the defined types and operations.
+    - **Method 3 (Pipes-and-Filters)**: Sequential filters may introduce slight overhead due to the hand-off between filters, but it supports parallelism in pipelines.
+    - **Method 4 (Event-Driven)**: While less performant due to event handling, asynchronous processing can boost performance in concurrent settings.
+5. **Reusability**
     
-    - **Method 2**: Best for simple tasks that don't require extensive changes.
-    - **Method 4**: More suitable for scalable applications or systems expected to evolve over time due to its modular nature.
+    - **Method 1 (ADT)**: Ideal for problems with well-defined data types where stability and encapsulation are important.
+    - **Method 3 (Pipes-and-Filters)**: Excellent for tasks requiring data transformation in stages, particularly for sequential or parallel data processing.
+    - **Method 4 (Event-Driven)**: Highly reusable in complex, scalable systems due to modularity and adaptability.
+
+---
 
 ### Conclusion
 
-Both methods have their advantages and trade-offs, depending on the complexity and needs of the application. Method 2 is straightforward and performant for simple tasks, while Method 4 offers better modularity and scalability for more complex applications.
+Each method has strengths and trade-offs depending on the task:
+
+- **Method 1 (ADT)** is ideal for stable, structured problems with a clear data type requirement.
+- **Method 2 (Main/Subroutine)** is straightforward and performs well in simple applications.
+- **Method 3 (Pipes-and-Filters)** works best for applications that benefit from staged data processing.
+- **Method 4 (Event-Driven)** offers the most flexibility for complex, scalable systems.
