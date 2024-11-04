@@ -30,7 +30,8 @@ What to do:
 2. Compare your solution to problems A and B with the solutions by two of your teammates (or classmates if less than three in a team) who applied different methods. 
 3. Use the following checklist: 
   a) in which case it is easier to change the implementation algorithm in each of the modules? 
-  b) in which solution it is easier (= seemingly less effort) to change data representation  c) in which solution it is easier to add additional functions to the modules
+  b) in which solution it is easier (= seemingly less effort) to change data representation  
+  c) in which solution it is easier to add additional functions to the modules
   d) which solution is seemingly more performant?
   e) if you are asked to implement a similar program, which of the solutions would you reuse?
 
