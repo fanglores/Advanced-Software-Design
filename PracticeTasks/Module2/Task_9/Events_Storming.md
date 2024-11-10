@@ -1,5 +1,4 @@
 ### **1. Key User/Job Stories and Use Cases for Event Storming**
-Given the complexity of the use case diagram, let’s focus on a few critical scenarios, such as:
 1. **Publishing and Deploying a Model (ML Engineer)**
    - An ML Engineer publishes a trained model and deploys it for production use.
 
@@ -12,7 +11,7 @@ Given the complexity of the use case diagram, let’s focus on a few critical sc
 ### **2. Identifying Events, Commands, and Aggregates**
 #### **Scenario 1: Publishing and Deploying a Model**
    **Actors:**
-   - **ML Engineer** as the primary initiator.
+   - **ML Engineer**
 
    **Commands and Events:**
    - **Command:** `PublishModel`  
@@ -31,7 +30,7 @@ Given the complexity of the use case diagram, let’s focus on a few critical sc
 
 #### **Scenario 2: Sending and Validating API Requests**
    **Actors:**
-   - **API Consumer** as the primary initiator.
+   - **API Consumer**
 
    **Commands and Events:**
    - **Command:** `SendRequest`  
@@ -68,8 +67,6 @@ Given the complexity of the use case diagram, let’s focus on a few critical sc
    - **LoadBalancer** – defines load balancing configuration and status.
    - **Log** – stores collected log data for auditing and monitoring.
 
----
-
 ### **3. Process Composition: API Request Handling Process**
 This process involves multiple events triggered by commands, following a sequential flow to handle API requests and responses.
 **Process:** **API Request Handling**
@@ -83,7 +80,7 @@ This process involves multiple events triggered by commands, following a sequent
    **Command:** `ValidateRequest`
 
 4. **Event:** `RequestValidated`  
-   **Command:** `CacheResponse` (if caching policy allows)
+   **Command:** `CacheResponse`
 
 5. **Event:** `ResponseCached`  
    **Command:** `SendResponse`
