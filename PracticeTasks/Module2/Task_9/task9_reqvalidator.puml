@@ -5,7 +5,7 @@ class "<<root>> Request Validator" as validator {
   +result_t Validate(request: Request)
 }
 
-class "<<resource>> OpenAPI Schema cached" as apischema {
+class "<<entity>> OpenAPI Schema cached" as apischema {
   +id: String
 }
 

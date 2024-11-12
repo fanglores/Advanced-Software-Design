@@ -1,0 +1,35 @@
+@startuml
+
+class "<<root>> OpenAPI Generator" as generator {
+  +id: String
+  +schema: OpenApiSchema
+  +crd: CRD
+  +sourceCode: SourceCode
+  +result_t CreateSchema(Model)
+  +result_t GetSchema()
+}
+
+class "<<entity>> OpenAPI Schema cached" as apischema {
+  +id: String
+}
+
+class "<<entity>> Model" as model {
+  +id: String
+  +crd: CRD
+  +code: SourceCode
+}
+
+class "<<entity>> CRD" as crd {
+  +data: String
+}
+
+class "<<entity>> SourceCode" as sourceCode {
+  +id: String
+}
+
+apischema "1" -up- "1" generator
+model "1" -up- "1" generator
+crd "1" -up- "1" model
+sourceCode "1" -up- "1" model
+
+@enduml

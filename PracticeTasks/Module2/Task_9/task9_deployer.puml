@@ -1,0 +1,24 @@
+@startuml
+
+class "<<entity>> ReplicaSet" as ReplicaSet {
+  +id: string
+  +replicas: uint
+  +dockerImage: string
+}
+
+class "<<entity>> Service" as Service {
+  +id: string
+  +ip: string
+  +name: string
+}
+
+class "<<root>> Service Deployer" as deployer {
+  +replica: ReplicaSet
+  +service: Service
+  +result_t Deploy()
+}
+
+ReplicaSet "1" -up- "1" deployer
+Service "1" -up- "1" deployer
+
+@enduml
