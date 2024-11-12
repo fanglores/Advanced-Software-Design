@@ -6,7 +6,7 @@ class "<<root>> Authentication Provider" as auth {
   +result_t Authenticate(token: String)
 }
 
-class "<<resource>> SSO Token" as sso {
+class "<<entity>> SSO Token" as sso {
   +token: String
   +login_time: DateTime
 }
