@@ -1,16 +1,21 @@
 @startuml
 
 class "<<root>> Authentication Provider" as auth {
-  +rbacRules: String[] 
-  +cache: SSOToken[]
+  +rbacRules: String[]
   +result_t Authenticate(token: String)
 }
 
-class "<<entity>> SSO Token" as sso {
+class "<<root>> SSO Provider" as sso {
+  +cache: SSOToken[]
+  +result_t ValidateToken(token: String)
+}
+
+class "<<entity>> SSO Token" as token {
   +token: String
   +login_time: DateTime
 }
 
-auth "1" <-- "*" sso
+auth -- sso
+sso "1" <-- "*" token
 
 @enduml

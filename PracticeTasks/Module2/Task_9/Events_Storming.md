@@ -39,11 +39,8 @@
    - **Command:** `AuthenticateRequest`  
        **Event:** `RequestAuthenticated` – confirms that the request was successfully authenticated.
 
-   - **Command:** `AuthorizeRequest`  
-       **Event:** `RequestAuthorized` – confirms that the consumer is authorized to access the requested resource.
-
    - **Command:** `ValidateRequest`  
-       **Event:** `RequestValidated` – verifies that the request structure matches the OpenAPI schema.
+       **Event:** `RequestValid` – verifies that the request structure matches the OpenAPI schema.
 
    - **Command:** `CacheResponse`  
        **Event:** `ResponseCached` – stores the response in the cache for future requests.
