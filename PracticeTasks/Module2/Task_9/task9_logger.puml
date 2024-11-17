@@ -1,16 +1,23 @@
 @startuml
 
 class "<<root>> Logger" as logger {
-  +logs: LogEntry[]
-  +result_t GetLogs(id: int, value: int)
+  +logs: LogFile[]
+  +result_t GetLogFiles()
+  +result_t GetLogs(filename: string)
 }
 
-class "<<entity>> Log Entry" as entry {
+class "<<entity>> Log File" as file {
+  +name: string
+  +data: LogEntry[]
+}
+
+class "<<value>> Log Entry" as entry {
   +datetime: DateTime
   +severity: int
   +data: string
 }
 
-logger "1" <-- "*" entry
+logger "1" <-- "*" file
+file "1" <-- "*" entry
 
 @enduml

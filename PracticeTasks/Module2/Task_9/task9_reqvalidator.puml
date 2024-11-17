@@ -9,8 +9,10 @@ class "<<entity>> OpenAPI Schema cached" as apischema {
   +id: String
 }
 
-class "<<entity>> Request" as request {
-  +data: String
+class "<<value>> Request" as request {
+  +id: int
+  +token: string
+  +data: string
 }
 
 validator "1" -- "1" apischema

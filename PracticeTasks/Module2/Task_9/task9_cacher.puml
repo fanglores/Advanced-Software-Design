@@ -2,17 +2,17 @@
 
 class "<<root>> Response Cacher" as cacher {
   +cache: CacheEntry[]
-  +result_t GetResponse(request: Request)
+  +result_t GetFromCache(request: Request, out response: Response)
+  +result_t SetCache(request: Request, response: Response)
 }
 
 class "<<entity>> Cache Entry" as cache {
-  +request_hash: int
+  +request_id: int
   +response: Response
 }
 
 class "<<value>> Request" as request {
   +id: int
-  +token: string
   +data: string
 }
 

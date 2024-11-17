@@ -1,0 +1,23 @@
+@startuml
+
+class "<<root>> Request Router" as router {
+  +routes: Route[]
+  +nodeIps: string[]
+  +result_t Forward(request: Request)
+}
+
+class "<<value>> Route" as route {
+  +dns: string
+  +serviceName: string
+  +params: string
+}
+
+class "<<value>> Request" as request {
+  +id: int
+  +data: string
+}
+
+router "1" <-- "*" route
+router -- request
+
+@enduml

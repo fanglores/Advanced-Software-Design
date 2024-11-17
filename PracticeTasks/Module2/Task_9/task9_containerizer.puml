@@ -1,0 +1,17 @@
+@startuml
+
+class "<<root>> Model Containerizer" as containerizer {
+  +manifest: Manifest
+  +result_t Containerize()
+}
+
+class "<<entity>> Manifest" as manifest {
+  +name: string
+  +repoUrl: string
+  +modelType: string
+  +modelClass: string
+}
+
+containerizer "1" <-- "1" manifest
+
+@enduml

@@ -11,6 +11,7 @@ class "<<root>> OpenAPI Generator" as generator {
 
 class "<<entity>> OpenAPI Schema cached" as apischema {
   +id: String
+  +data: JSON
 }
 
 class "<<entity>> Model" as model {
