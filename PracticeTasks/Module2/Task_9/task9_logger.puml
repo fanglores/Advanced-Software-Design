@@ -1,0 +1,16 @@
+@startuml
+
+class "<<root>> Logger" as logger {
+  +logs: LogEntry[]
+  +result_t GetLogs(id: int, value: int)
+}
+
+class "<<entity>> Log Entry" as entry {
+  +datetime: DateTime
+  +severity: int
+  +data: string
+}
+
+logger "1" <-- "*" entry
+
+@enduml

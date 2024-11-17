@@ -1,0 +1,9 @@
+@startuml
+
+class "<<root>> Load Balancer" as balancer {
+  +weights: map<id: int, weight: int>
+  +result_t Get(id: int, out value: int)
+  +result_t Set(id: int, value: int)
+}
+
+@enduml

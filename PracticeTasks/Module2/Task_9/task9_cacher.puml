@@ -1,0 +1,28 @@
+@startuml
+
+class "<<root>> Response Cacher" as cacher {
+  +cache: CacheEntry[]
+  +result_t GetResponse(request: Request)
+}
+
+class "<<entity>> Cache Entry" as cache {
+  +request_hash: int
+  +response: Response
+}
+
+class "<<value>> Request" as request {
+  +id: int
+  +token: string
+  +data: string
+}
+
+class "<<value>> Response" as response {
+  +id: int
+  +data: string
+}
+
+cacher "1" <-- "*" cache
+cacher -- request
+cache -- response
+
+@enduml
