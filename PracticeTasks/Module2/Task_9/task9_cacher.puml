@@ -8,6 +8,7 @@ class "<<root>> Response Cacher" as cacher {
 
 class "<<entity>> Cache Entry" as cache {
   +request_id: int
+  +datetime: DateTime
   +response: Response
 }
 

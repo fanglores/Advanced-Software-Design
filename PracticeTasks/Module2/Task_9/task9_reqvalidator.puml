@@ -7,11 +7,11 @@ class "<<root>> Request Validator" as validator {
 
 class "<<entity>> OpenAPI Schema cached" as apischema {
   +id: String
+  +data: JSON
 }
 
 class "<<value>> Request" as request {
   +id: int
-  +token: string
   +data: string
 }
 
