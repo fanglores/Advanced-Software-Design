@@ -1,0 +1,512 @@
+openapi: 3.0.3
+info:
+  title: Kubernetes ML Extension API
+  version: 1.0.0
+  description: RESTful API for managing and deploying ML services in Kubernetes.
+servers:
+  - url: http://{host}:{port}/api/v1/k8c
+    description: API server
+    variables:
+      host:
+        default: "localhost"
+      port:
+        default: "8080"
+tags:
+  - name: ServiceDeployer
+    description: Deploys and manages ML services.
+  - name: Authenticator
+    description: Handles authentication and RBAC validation.
+  - name: OpenAPIGenerator
+    description: Generates OpenAPI schemas for ML services.
+  - name: Logger
+    description: Collects and provides logs for deployed services.
+  - name: RequestRouter
+    description: Routes and validates API requests, with caching support.
+
+paths:
+  /router/loadbalancer:
+    post:
+      tags:
+        - RequestRouter
+      summary: Configure load balancer for a deployed ML service
+      description: Adds or updates the load balancer configuration for a deployed ML service.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoadBalancerConfig'
+      responses:
+        '201':
+          description: Load balancer configuration successfully created or updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoadBalancerResponse'
+
+    get:
+      tags:
+        - RequestRouter
+      summary: List all load balancer configurations
+      description: Retrieves a list of load balancer configurations for all deployed ML services.
+      responses:
+        '200':
+          description: List of load balancer configurations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LoadBalancerInfo'
+
+  /router/loadbalancer/{serviceId}:
+    get:
+      tags:
+        - RequestRouter
+      summary: Get load balancer configuration for a specific ML service
+      description: Fetches the load balancer configuration for a specified ML service.
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Load balancer configuration details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoadBalancerDetails'
+        '404':
+          description: Service not found
+
+    delete:
+      tags:
+        - RequestRouter
+      summary: Remove load balancer configuration
+      description: Deletes the load balancer configuration for a specified ML service.
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Load balancer configuration successfully removed
+        '404':
+          description: Service not found
+
+  /services:
+    post:
+      tags:
+        - ServiceDeployer
+      summary: Deploy an ML service
+      description: Deploys an ML model as a Kubernetes Deployment and Service, providing network access.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeployRequest'
+      responses:
+        '201':
+          description: ML service successfully deployed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeployResponse'
+
+    get:
+      tags:
+        - ServiceDeployer
+      summary: List all deployed services
+      description: Retrieves a list of all ML services currently deployed.
+      responses:
+        '200':
+          description: List of deployed services
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServiceInfo'
+
+  /services/{serviceId}:
+    get:
+      tags:
+        - ServiceDeployer
+      summary: Get service details
+      description: Fetches details about a specific ML service, including Kubernetes Service information.
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the ML service
+      responses:
+        '200':
+          description: Details of the deployed ML service
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceDetails'
+        '404':
+          description: Service not found
+
+    put:
+      tags:
+        - ServiceDeployer
+      summary: Update an ML service
+      description: Updates the configuration or model for a deployed ML service.
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the ML service
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRequest'
+      responses:
+        '200':
+          description: ML service updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateResponse'
+        '404':
+          description: Service not found
+
+    delete:
+      tags:
+        - ServiceDeployer
+      summary: Delete an ML service
+      description: Removes the ML service from the cluster, including its Deployment and Service.
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the ML service
+      responses:
+        '204':
+          description: Service successfully deleted
+        '404':
+          description: Service not found
+
+  /services/{serviceId}/predict:
+    post:
+      tags:
+        - ServiceDeployer
+      summary: Make a prediction
+      description: Sends input data to the deployed model for inference.
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the ML service
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PredictRequest'
+      responses:
+        '200':
+          description: Model inference result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PredictResponse'
+        '404':
+          description: Service not found
+
+  /auth/login:
+    post:
+      tags:
+        - Authenticator
+      summary: Perform SSO authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+
+  /openapi/{serviceId}:
+    get:
+      tags:
+        - OpenAPIGenerator
+      summary: Get the OpenAPI schema of a deployed service
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the ML service
+      responses:
+        '200':
+          description: OpenAPI schema generated
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+        '404':
+          description: Service not found
+
+  /logs/{serviceId}:
+    get:
+      tags:
+        - Logger
+      summary: Fetch logs for a deployed service
+      parameters:
+        - name: serviceId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Unique identifier of the ML service
+      responses:
+        '200':
+          description: Logs retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Logs'
+
+
+  /router/validate:
+    post:
+      tags:
+        - RequestRouter
+      summary: Validate an API request against OpenAPI schema
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidationRequest'
+      responses:
+        '200':
+          description: Request valid
+        '400':
+          description: Request validation failed
+
+  /router/cache:
+    get:
+      tags:
+        - RequestRouter
+      summary: Fetch cached API response
+      parameters:
+        - name: cacheKey
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Unique key for the cached response
+      responses:
+        '200':
+          description: Cached response retrieved
+        '404':
+          description: Cache entry not found
+
+components:
+  schemas:
+    LoadBalancerConfig:
+      type: object
+      properties:
+        serviceId:
+          type: string
+          description: Unique identifier of the ML service
+        algorithm:
+          type: string
+          enum:
+            - round_robin
+            - least_connections
+            - ip_hash
+          description: Load balancing algorithm
+        replicas:
+          type: array
+          items:
+            type: string
+          description: List of replica endpoints (e.g., IPs or pod names)
+    LoadBalancerResponse:
+      type: object
+      properties:
+        serviceId:
+          type: string
+        status:
+          type: string
+          enum:
+            - created
+            - updated
+        message:
+          type: string
+    LoadBalancerInfo:
+      type: object
+      properties:
+        serviceId:
+          type: string
+        algorithm:
+          type: string
+        replicas:
+          type: array
+          items:
+            type: string
+    LoadBalancerDetails:
+      type: object
+      properties:
+        serviceId:
+          type: string
+        algorithm:
+          type: string
+        replicas:
+          type: array
+          items:
+            type: string
+        activeReplicaCount:
+          type: integer
+          description: Number of active replicas currently in use
+    DeployRequest:
+      type: object
+      properties:
+        modelName:
+          type: string
+          description: Name of the ML model
+        framework:
+          type: string
+          enum:
+            - TensorFlow
+            - PyTorch
+            - Custom
+          description: Framework used for the model
+        replicas:
+          type: integer
+          description: Number of replicas for the Deployment
+        containerImage:
+          type: string
+          description: Prebuilt container image for the ML model (optional if sourceCode is provided)
+        sourceCode:
+          type: string
+          description: URL or path to the source code for model containerization (optional)
+    DeployResponse:
+      type: object
+      properties:
+        serviceId:
+          type: string
+        kubernetesService:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Name of the Kubernetes Service
+            clusterIP:
+              type: string
+              description: ClusterIP of the Service
+            ports:
+              type: array
+              items:
+                type: integer
+    ServiceInfo:
+      type: object
+      properties:
+        serviceId:
+          type: string
+        modelName:
+          type: string
+        status:
+          type: string
+          enum:
+            - deploying
+            - deployed
+            - updating
+    ServiceDetails:
+      type: object
+      properties:
+        serviceId:
+          type: string
+        modelName:
+          type: string
+        status:
+          type: string
+        kubernetesService:
+          type: object
+          $ref: '#/components/schemas/DeployResponse'
+    UpdateRequest:
+      type: object
+      properties:
+        replicas:
+          type: integer
+          description: Updated number of replicas
+        containerImage:
+          type: string
+          description: Updated container image
+    UpdateResponse:
+      type: object
+      properties:
+        serviceId:
+          type: string
+        status:
+          type: string
+    PredictRequest:
+      type: object
+      properties:
+        inputs:
+          type: object
+          additionalProperties: true
+          description: Input data for the prediction
+    PredictResponse:
+      type: object
+      properties:
+        predictions:
+          type: array
+          items:
+            type: object
+          description: Model inference results
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+    Logs:
+      type: object
+      properties:
+        logEntries:
+          type: array
+          items:
+            type: string
+    ValidationRequest:
+      type: object
+      properties:
+        serviceId:
+          type: string
+        requestPayload:
+          type: object
+        schemaVersion:
+          type: string
