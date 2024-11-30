@@ -292,6 +292,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Logs'
+        '404':
+            description: Service not found
+        '500':
+            description: Error fetching logs
 
 
   /router/validate:
