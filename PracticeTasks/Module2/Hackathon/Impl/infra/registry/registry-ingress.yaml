@@ -1,0 +1,17 @@
+# registry-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: registry-ingress
+  namespace: kea-project
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /registry
+            pathType: Prefix
+            backend:
+              service:
+                name: docker-registry
+                port:
+                  number: 5000

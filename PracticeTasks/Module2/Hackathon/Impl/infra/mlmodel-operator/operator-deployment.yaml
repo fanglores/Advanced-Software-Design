@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlmodel-operator
+  namespace: kea-project
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mlmodel-operator
+  template:
+    metadata:
+      labels:
+        app: mlmodel-operator
+    spec:
+      serviceAccountName: mlmodel-operator-sa
+      containers:
+        - name: operator
+          image: your-registry/kea-project/mlmodel-operator:latest
+          imagePullPolicy: Always
+          env:
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          volumeMounts:
+            - name: docker-config
+              mountPath: /kaniko/.docker/
+            # - name: docker-sock
+            #   mountPath: /var/run/docker.sock
+      volumes:
+        - name: docker-config
+          secret:
+            secretName: registry-secret
+      # Uncomment if using Docker socket (not recommended in managed environments)
+      # - name: docker-sock
+      #   hostPath:
+      #     path: /var/run/docker.sock

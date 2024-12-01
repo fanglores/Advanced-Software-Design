@@ -1,0 +1,17 @@
+# minio-ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minio-ingress
+  namespace: kea-project
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /minio
+            pathType: Prefix
+            backend:
+              service:
+                name: minio
+                port:
+                  number: 9000

@@ -1,0 +1,14 @@
+# minio-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: minio
+  namespace: kea-project
+spec:
+  selector:
+    app: minio
+  ports:
+    - protocol: TCP
+      port: 9000
+      targetPort: 9000
+  type: ClusterIP

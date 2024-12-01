@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: mlmodel-operator-sa
+  namespace: kea-project
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: mlmodel-operator-role
+rules:
+  - apiGroups:
+      - example.com
+    resources:
+      - mlmodels
+    verbs:
+      - '*'
+  - apiGroups:
+      - apps
+    resources:
+      - deployments
+    verbs:
+      - '*'
+  - apiGroups:
+      - ""
+    resources:
+      - services
+      - pods
+      - persistentvolumeclaims
+      - configmaps
+      - secrets
+    verbs:
+      - '*'
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - ingresses
+    verbs:
+      - '*'
+  - apiGroups:
+      - batch
+    resources:
+      - jobs
+    verbs:
+      - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: mlmodel-operator-binding
+subjects:
+  - kind: ServiceAccount
+    name: mlmodel-operator-sa
+    namespace: kea-project
+roleRef:
+  kind: ClusterRole
+  name: mlmodel-operator-role
+  apiGroup: rbac.authorization.k8s.io
