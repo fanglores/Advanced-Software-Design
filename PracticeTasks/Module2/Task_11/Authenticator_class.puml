@@ -1,0 +1,15 @@
+@startuml
+class AuthenticationProvider <<root>> {
+  +rbacRules: String[]
+  +Authenticate(token: String): result_t
+  +ValidateToken(token: String): result_t
+  +cache: SSOToken[]
+}
+
+class SSOToken <<entity>> {
+  +token: String
+  +login_time: DateTime
+}
+
+AuthenticationProvider "1" --> "*" SSOToken
+@enduml
