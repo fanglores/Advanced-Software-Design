@@ -3,6 +3,7 @@ entity "Services" {
     * service_id : SERIAL [PK]
     * service_name : VARCHAR(255) [UNIQUE]
     * created_at : TIMESTAMP
+    * schema_id: INT [FK]
 }
 
 entity "Schemas" {
@@ -10,6 +11,7 @@ entity "Schemas" {
     * service_id : INT [FK]
     * json_schema : JSON
     * created_at : TIMESTAMP
+    * version: INT
 }
 
 Services ||--o{ Schemas : "1-to-many"
