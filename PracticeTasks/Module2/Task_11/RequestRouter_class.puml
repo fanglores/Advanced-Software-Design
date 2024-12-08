@@ -1,0 +1,60 @@
+@startuml
+
+class RequestRouter <<root>> {
+    routes: Route[]
+    nodeIps: string[]
+    +result_t Forward(request: Request)
+}
+
+class LoadBalancer <<service>> {
+    weights: map<id: int, weight: int>
+    +result_t Get(id: int, out value: int)
+    +result_t Set(id: int, value: int)
+}
+
+class ResponseCacher <<service>> {
+    cache: CacheEntry[]
+    +result_t GetFromCache(request: Request, out response: Response)
+    +result_t SetCache(request: Request, response: Response)
+}
+
+class CacheEntry <<entity>> {
+    request_id: int
+    response: Response
+}
+
+class Response <<value>> {
+    id: int
+    data: string
+}
+
+class RequestValidator <<service>> {
+    schema: OpenApiSchema
+    +result_t Validate(request: Request)
+}
+
+class OpenApiSchema <<entity>> {
+    id: String
+    data: JSON
+}
+
+class Request <<value>> {
+    id: int
+    data: string
+}
+
+class Route <<value>> {
+    dns: string
+    serviceName: string
+    params: string
+}
+
+RequestRouter "1" *-right-> "*" Route : stores
+RequestRouter "1" *-left-> "*" Request : receives
+RequestRouter "1" *--> "*" LoadBalancer : manages
+RequestRouter "1" *--> "1" ResponseCacher : has
+RequestRouter "1" *--> "1" RequestValidator : has
+ResponseCacher "1" *--> "*" CacheEntry : stores
+CacheEntry "1" --> "1" Response : has
+RequestValidator "1" *--> "*" OpenApiSchema : stores schemas
+@enduml
