@@ -1,54 +1,44 @@
-apiVersion: apiextensions.k8s.io/v1
-kind: CustomResourceDefinition
+apiVersion: v1
+kind: ConfigMap
 metadata:
-  name: requestrouters.example.com
+  name: request-router-config
+data:
+  cache_url: "redis://router-cache:6379"
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: request-router
 spec:
-  group: example.com
-  names:
-    kind: RequestRouter
-    listKind: RequestRouterList
-    plural: requestrouters
-    singular: requestrouter
-  scope: Namespaced
-  versions:
-    - name: v1
-      served: true
-      storage: true
-      schema:
-        openAPIV3Schema:
-          type: object
-          properties:
-            spec:
-              type: object
-              properties:
-                routes:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      dns:
-                        type: string
-                      serviceName:
-                        type: string
-                      params:
-                        type: string
-                loadBalancers:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      modelId:
-                        type: string
-                      serverWeights:
-                        type: object
-                        additionalProperties:
-                          type: integer
-                schemas:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      modelId:
-                        type: string
-                      jsonSchema:
-                        type: object
+  replicas: 3
+  selector:
+    matchLabels:
+      app: request-router
+  template:
+    metadata:
+      labels:
+        app: request-router
+    spec:
+      containers:
+      - name: request-router
+        image: request-router:latest
+        env:
+        - name: CACHE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: request-router-config
+              key: cache_url
+        ports:
+        - containerPort: 8080
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: request-router
+spec:
+  selector:
+    app: request-router
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080

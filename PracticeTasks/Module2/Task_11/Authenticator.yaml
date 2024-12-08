@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: authenticator-config
+data:
+  database_url: "postgresql://auth_user:password@auth-db/authenticator"
+  token_expiry: "3600"
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authenticator
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: authenticator
+  template:
+    metadata:
+      labels:
+        app: authenticator
+    spec:
+      containers:
+      - name: authenticator
+        image: authenticator:latest
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: authenticator-config
+              key: database_url
+        - name: TOKEN_EXPIRY
+          valueFrom:
+            configMapKeyRef:
+              name: authenticator-config
+              key: token_expiry
+        ports:
+        - containerPort: 8080
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: authenticator
+spec:
+  selector:
+    app: authenticator
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080

@@ -1,0 +1,16 @@
+@startuml
+entity "Services" {
+    * service_id : SERIAL [PK]
+    * service_name : VARCHAR(255) [UNIQUE]
+    * created_at : TIMESTAMP
+}
+
+entity "Schemas" {
+    * schema_id : SERIAL [PK]
+    * service_id : INT [FK]
+    * json_schema : JSON
+    * created_at : TIMESTAMP
+}
+
+Services ||--o{ Schemas : "1-to-many"
+@enduml

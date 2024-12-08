@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openapi-generator-config
+data:
+  database_url: "mongodb://openapi-user:password@openapi-db/openapi_generator"
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openapi-generator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openapi-generator
+  template:
+    metadata:
+      labels:
+        app: openapi-generator
+    spec:
+      containers:
+      - name: openapi-generator
+        image: openapi-generator:latest
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: openapi-generator-config
+              key: database_url
+        ports:
+        - containerPort: 8080
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: openapi-generator
+spec:
+  selector:
+    app: openapi-generator
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080

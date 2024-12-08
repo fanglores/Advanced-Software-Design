@@ -1,0 +1,19 @@
+@startuml
+entity "Users" {
+    * id : SERIAL [PK]
+    * username : VARCHAR(255) [UNIQUE]
+    * password_hash : VARCHAR(255)
+    * created_at : TIMESTAMP
+    * last_login : TIMESTAMP
+}
+
+entity "Sessions" {
+    * id : SERIAL [PK]
+    * user_id : INT [FK]
+    * session_token : VARCHAR(255) [UNIQUE]
+    * expires_at : TIMESTAMP
+    * created_at : TIMESTAMP
+}
+
+Users ||--o{ Sessions : "1-to-many"
+@enduml

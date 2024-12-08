@@ -1,0 +1,32 @@
+@startuml
+class OpenAPIGenerator <<root>> {
+  +id: String
+  +schema: OpenApiSchema
+  +CreateSchema(model: Model): result_t
+  +GetSchema(): result_t
+}
+
+class Model <<entity>> {
+  +id: String
+  +crd: CRD
+  +code: SourceCode
+}
+
+class OpenApiSchema <<entity>> {
+  +id: String
+  +data: JSON
+}
+
+class CRD <<value>> {
+  +data: String
+}
+
+class SourceCode <<entity>> {
+  +id: String
+}
+
+OpenAPIGenerator "1" --> "1" OpenApiSchema : generates, stores
+OpenAPIGenerator "1" --> "1" Model : receives
+Model "1" --> "1" CRD : has
+Model "1" --> "1" SourceCode : has
+@enduml

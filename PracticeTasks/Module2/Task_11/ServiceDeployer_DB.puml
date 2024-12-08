@@ -1,0 +1,20 @@
+@startuml
+entity "Services" {
+    * service_id : SERIAL [PK]
+    * service_name : VARCHAR(255) [UNIQUE]
+    * docker_image : VARCHAR(255)
+    * replicas : INT
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
+}
+
+entity "Replica Sets" as ReplicaSets {
+    * replica_id : SERIAL [PK]
+    * service_id : INT [FK]
+    * pod_name : VARCHAR(255)
+    * status : VARCHAR(50)
+    * created_at : TIMESTAMP
+}
+
+Services ||--o{ ReplicaSets : "1-to-many"
+@enduml

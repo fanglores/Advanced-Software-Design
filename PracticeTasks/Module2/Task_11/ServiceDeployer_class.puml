@@ -1,0 +1,32 @@
+@startuml
+class ServiceDeployer <<root>> {
+  +replicaSet: ReplicaSet
+  +service: Service
+  +manifest: Manifest
+  +Deploy(): result_t
+  +Containerize(): result_t
+}
+
+class ReplicaSet <<entity>> {
+  +id: string
+  +replicas: uint
+  +dockerImage: string
+}
+
+class Service <<entity>> {
+  +id: string
+  +ip: string
+  +name: string
+}
+
+class Manifest <<value object>> {
+  +name: string
+  +repoUrl: string
+  +modelType: string
+  +modelClass: string
+}
+
+ServiceDeployer "1" --> "1" ReplicaSet : manages
+ServiceDeployer "1" --> "1" Service : manages
+ServiceDeployer "1" --> "1" Manifest : uses
+@enduml
