@@ -2,14 +2,15 @@
 
 actor "ML Engineer" as mlengineer
 
+rectangle "API Gateway" as System {
+  usecase "Create instance of ML Service" as uc2
+  usecase "Containerize Model with Docker" as uc3
+  usecase "Create K8s Service" as uc4
+}
+
 rectangle "Kubernetes" as K8s {
   usecase "Publish Model" as uc1
-  rectangle "API Gateway" as System {
-    usecase "Create instance of ML Service" as uc2
-    usecase "Containerize Model with Docker" as uc3
-    usecase "Create K8s Service" as uc4
-  }
-  
+
   rectangle "K8s Pod" as K8Pod {
   }
   
