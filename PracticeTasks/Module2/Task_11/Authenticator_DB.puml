@@ -15,5 +15,5 @@ entity "Sessions" {
     * created_at : TIMESTAMP
 }
 
-Users ||--o{ Sessions : "1-to-many"
+Users ||--o{ Sessions
 @enduml

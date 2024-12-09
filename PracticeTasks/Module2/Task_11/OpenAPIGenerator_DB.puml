@@ -14,5 +14,5 @@ entity "Schemas" {
     * version: INT
 }
 
-Services ||--o{ Schemas : "1-to-many"
+Services ||--o{ Schemas
 @enduml

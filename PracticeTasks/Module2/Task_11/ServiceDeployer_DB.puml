@@ -16,5 +16,5 @@ entity "Replica Sets" as ReplicaSets {
     * created_at : TIMESTAMP
 }
 
-Services ||--o{ ReplicaSets : "1-to-many"
+Services ||--o{ ReplicaSets
 @enduml
