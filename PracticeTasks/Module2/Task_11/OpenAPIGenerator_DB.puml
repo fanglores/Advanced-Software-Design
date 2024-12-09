@@ -1,17 +1,17 @@
 @startuml
 entity "Services" {
     * service_id : SERIAL [PK]
-    * service_name : VARCHAR(255) [UNIQUE]
+    * name : VARCHAR(255) [UNIQUE]
+    * docker_image : VARCHAR(255)
+    * replicas : INT
     * created_at : TIMESTAMP
-    * schema_id: INT [FK]
+    * updated_at : TIMESTAMP
 }
 
 entity "Schemas" {
     * schema_id : SERIAL [PK]
     * service_id : INT [FK]
     * json_schema : JSON
-    * created_at : TIMESTAMP
-    * version: INT
 }
 
 Services ||--o{ Schemas

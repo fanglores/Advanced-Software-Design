@@ -1,8 +1,11 @@
 @startuml
 entity "Services" {
     * service_id : SERIAL [PK]
-    * name : VARCHAR(255)
-    * description : TEXT
+    * name : VARCHAR(255) [UNIQUE]
+    * docker_image : VARCHAR(255)
+    * replicas : INT
+    * created_at : TIMESTAMP
+    * updated_at : TIMESTAMP
 }
 
 entity "Routes" {
