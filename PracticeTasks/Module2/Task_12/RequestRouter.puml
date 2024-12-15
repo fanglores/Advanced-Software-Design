@@ -1,0 +1,52 @@
+@startuml
+interface CacheStorageInterface {
+  {abstract} +GetFromCache(request: Request, response: Response): result_t
+  {abstract} +SetCache(request: Request, response: Response): result_t
+}
+
+class RedisCacheAdapter implements CacheStorageInterface {
+  +GetFromCache(request: Request, response: Response): result_t
+  +SetCache(request: Request, response: Response): result_t
+}
+
+class FakeCacheAdapter implements CacheStorageInterface {
+  -cache: map<Request, Response>
+  +GetFromCache(request: Request, response: Response): result_t
+  +SetCache(request: Request, response: Response): result_t
+}
+
+interface SchemaStrategy {
+  {abstract} +Validate(request: Request): result_t
+}
+
+class OpenAPISchemaStrategy implements SchemaStrategy {
+  -schema: map<String, String>
+  {abstract} +Validate(request: Request): result_t
+}
+
+interface RoutingInterface {
+  {abstract} +SendRequest(route: Route, request: Request): Response
+}
+
+class KubernetesRoutingAdapter implements RoutingInterface {
+  +SendRequest(route: Route, request: Request): Response
+}
+
+class RequestRouter {
+  -cacheStorageProvider: CacheStorageInterface
+  -schemaValidator: SchemaStrategy
+  -router: RoutingStrategy
+  -routes: Route[]
+  -weights: map<Integer, Integer>
+  +Forward(request: Request): result_t
+  +Validate(request: Request): result_t
+  +SetCache(request: Request, response: Response): result_t
+  +GetFromCache(request: Request): Response
+  +GetWeight(id: int, out value: int): result_t
+  +SetWeight(id: int, value: int): result_t
+}
+
+RequestRouter --> RoutingInterface
+RequestRouter --> CacheStorageInterface
+RequestRouter --> SchemaStrategy
+@enduml
