@@ -1,0 +1,160 @@
+@startuml
+
+!define RECTANGLE #lightgreen
+!define ENTITY #lightblue
+!define VALUE #lightgray
+
+' === VALUES ===
+class "Cache" <<value>> VALUE {
+    + response: String
+    + time: Datetime
+}
+
+class "SSO Token" <<value>> VALUE {
+    + token: String
+    + login_time: Datetime
+}
+
+class "Log" <<value>> VALUE {
+    + data: String
+}
+
+class "OpenAPI Schema" <<value>> VALUE {
+    + id: String
+    + data: JSON
+}
+
+class "CRD" <<value>> VALUE {
+    + data: String
+}
+
+class Request <<value>> VALUE {
+    + id: int
+    + data: string
+}
+
+class Response <<value>> VALUE {
+    + id: int
+    + data: string
+}
+
+class Route <<value>> VALUE {
+    + dns: string
+    + serviceName: string
+    + params: string
+}
+
+
+' === ENTITIES ===
+class "Model" <<entity>> ENTITY {
+    + id: String
+    + crd: CRD
+    + code: SourceCode
+}
+
+class "SourceCode" <<entity>> VALUE {
+    + id: String
+}
+
+class "Service" <<entity>> ENTITY {
+    + id: String
+}
+
+class CacheEntry <<entity>> ENTITY {
+    + request_id: int
+    + response: Response
+}
+
+class OpenApiSchema <<entity>> ENTITY {
+    + id: string
+    + data: JSON
+}
+
+class "Pod" <<entity>> ENTITY
+class "Kubernetes" <<entity>> ENTITY
+
+
+' === SERVICES ===
+class "Request Router" <<service>> RECTANGLE {
+    + routes: Route[]
+    + cache: CacheEntry[]
+    + schema: OpenApiSchema
+    + weights: map<id: int, weight: int>
+    + Forward(request: Request): result_t
+    + Validate(request: Request): result_t
+    + SetCache(request: Request, response: Response): result_t
+    + GetFromCache(request: Request): Response
+    + GetWeight(id: int, out value: int): result_t
+    + SetWeight(id: int, value: int): result_t
+}
+
+class "Authentication Provider" <<service>> RECTANGLE {
+    + rbacRules: String[]
+    + cache: SSOToken[]
+    + Authenticate(token: String): result_t
+    + ValidateToken(token: String): result_t
+}
+
+class "Response Cacher" <<service>> RECTANGLE {
+    + GetResponse(): result_t
+    + CacheResponse(): result_t
+}
+
+class "Request Validator" <<service>> RECTANGLE {
+    + Validate(): result_t
+}
+
+class "Load Balancer" <<service>> RECTANGLE {
+    + weights: Float[]
+    + Balance(): result_t
+}
+
+class "System Logger" <<service>> RECTANGLE {
+    + loggingRules: String[]
+    + RetrieveLogs(): Logs[]
+}
+
+class "Service Deployer" <<service>> RECTANGLE {
+    + Deploy(): result_t
+}
+
+class "OpenAPI Generator" <<service>> RECTANGLE {
+    + id: String
+    + schema: OpenApiSchema
+    + CreateSchema(model: Model): result_t
+    + GetSchema(): result_t
+}
+
+
+' === RELATIONSHIPS ===
+"Request Router" --> "Authentication Provider"
+"Request Router" --> "Request Validator"
+"Request Router" --> "Response Cacher"
+"Request Router" *-- "Load Balancer"
+
+"Authentication Provider" "1" --> "*" "SSO Token"
+"Response Cacher" --> "Cache"
+
+"Request Validator" --> "Model"
+"Model" "1" --> "1" "CRD" : has
+"Model" "1" --> "1" "SourceCode" : has
+"Service" *-- "Kubernetes"
+"Pod" *-- "Kubernetes"
+
+"Kubernetes" --> "Service Deployer"
+"Kubernetes" *-- "Load Balancer"
+"Kubernetes" *-- "System Logger"
+"System Logger" --> "Log"
+
+"OpenAPI Generator" "1" --> "1" "OpenAPI Schema"
+"OpenAPI Generator" "1" --> "1" Model : receives
+"Request Router" --> "OpenAPI Generator"
+"Request Validator" --- "OpenAPI Generator"
+
+"Request Router" "1" *-left-> "*" "Request" : receives
+"Request Router" "1" --> "*" "Route" : has
+"Request Router" "1" --> "*" "CacheEntry" : manages
+"Request Router" "1" --> "1" "OpenApiSchema" : stores
+"CacheEntry" "1" --> "1" "Response" : has
+
+@enduml
