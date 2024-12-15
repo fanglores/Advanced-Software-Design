@@ -1,13 +1,13 @@
 @startuml
-interface ModelDataInterface {
+interface ModelDataStrategy {
   {abstract} +extractModelData(schema: JSON): result_t
 }
 
-class CRDAdapter implements ModelDataInterface {
+class CRDStrategy implements ModelDataStrategy {
   +extractModelData(schema: JSON): result_t
 }
 
-class SourceCodeAdapter implements ModelDataInterface {
+class SourceCodeStrategy implements ModelDataStrategy {
   +extractModelData(schema: JSON): result_t
 }
 
@@ -44,6 +44,6 @@ class ServiceDeployer {
 }
 
 ServiceDeployer --> RepositoryInterface
-ServiceDeployer --> ModelDataInterface
+ServiceDeployer --> ModelDataStrategy
 ServiceDeployer --> OrchestrationInterface
 @enduml
