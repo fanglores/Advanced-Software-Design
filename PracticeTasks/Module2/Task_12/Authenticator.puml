@@ -1,33 +1,50 @@
 @startuml
-interface CacheInterface {
-  {abstract} +GetToken(token: String, ssoToken: String): result_t
-  {abstract} +SaveToken(token: SSOToken): result_t
+class AuthenticationProvider {
+  -authStrategy: AuthStrategy
+  -tokenValidator: TokenValidator
+  -tokenCacheManager: TokenCacheManager
+  -rulesManager: RulesManagerInterface
+  +ValidateToken(token: SSOToken): result_t
+  +AuthenticateToken(token: String): SSOToken
 }
 
-class FakeCacheAdapter implements CacheInterface {
-  -cache: map<String, String>
-  +GetToken(token: String, ssoToken: String): result_t
-  +SaveToken(token: SSOToken): result_t
+interface AuthInterface {
+  {abstract} +Authenticate(token: String): result_t
+}
+
+class GoogleAuthStrategy implements AuthInterface {
+  +Authenticate(token: String): result_t
 }
 
 interface ValidatorInterface {
-  {abstract} +Validate(token: String): result_t
+  {abstract} +ValidateToken(token: SSOToken): result_t
 }
 
-class SSOValidator implements ValidatorInterface {
-  +Validate(token: String): result_t
+class TokenCacheManager implements ValidatorInterface {
+  -cache: CachedToken[]
+  +Add(token: SSOToken)
+  +Get(token: SSOToken): result_t
 }
 
-class AuthenticationProvider {
-  -cache: CacheInterface
-  -validator: ValidatorInterface
-  -rbacRules: String[]
+class "CachedToken {singleton}" as CachedToken {
+  -_instance: SSOToken
+  +CachedToken(token: SSOToken): TokenCache
+  +Get(): SSOToken
+}
+
+interface RulesManagerInterface {
+  {abstract} +SetRule(rule: String): result_t
+  {abstract} +GetRules(rules: String[]): result_t
+}
+
+class RulesManagerImpl implements RulesManagerInterface {
+  +rbacRules: String[]
   +SetRule(rule: String): result_t
   +GetRules(rules: String[]): result_t
-  +Authenticate(token: String): result_t
-  +ValidateToken(token: String): result_t
 }
 
-AuthenticationProvider --> CacheInterface
+AuthenticationProvider --> AuthInterface
+AuthenticationProvider --> RulesManagerInterface
 AuthenticationProvider --> ValidatorInterface
+TokenCacheManager --> CachedToken
 @enduml
