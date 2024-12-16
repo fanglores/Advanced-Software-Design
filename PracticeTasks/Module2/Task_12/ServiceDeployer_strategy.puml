@@ -1,0 +1,75 @@
+@startuml
+interface ModelDataStrategy {
+  {abstract} +extractModelData(schema: JSON): result_t
+}
+
+class CRDStrategy implements ModelDataStrategy {
+  +extractModelData(schema: JSON): result_t
+}
+
+class SourceCodeStrategy implements ModelDataStrategy {
+  +extractModelData(schema: JSON): result_t
+}
+
+interface RepositoryInterface {
+  {abstract} +GetFileContents(url: string, data: string): result_t
+}
+
+class GitAdapter implements RepositoryInterface {
+  +GetFileContents(url: string, data: string): result_t
+}
+
+interface OrchestrationInterface {
+  {abstract} +deployService(serviceId: String, replicas: Int): result_t
+  {abstract} +scaleReplicas(serviceId: String, replicas: Int): result_t
+  {abstract} +getStatus(serviceId: String): String
+  {abstract} +getCRD(serviceId: String, crd: String): result_t
+}
+
+class KubernetesAdapter implements OrchestrationInterface {
+  +deployService(serviceId: String, replicas: Int): result_t
+  +scaleReplicas(serviceId: String, replicas: Int): result_t
+  +getStatus(serviceId: String): String
+  +getCRD(serviceId: String, crd: String): result_t
+}
+
+class ServiceDeployer {
+  -repository: RepositoryInterface
+  -orchestrator: OrchestrationInterface
+  +replicaSet: ReplicaSet
+  +service: Service
+  +manifest: Manifest
+  +Deploy(): result_t
+  +Containerize(): result_t
+}
+
+ServiceDeployer --> RepositoryInterface
+ServiceDeployer --> ModelDataStrategy
+ServiceDeployer --> OrchestrationInterface
+
+interface IDeployStrategy {
+  +Deploy(replicaSet: IReplicaSet): result_t
+}
+
+class BlueGreenDeploy implements IDeployStrategy {
+  +Deploy(replicaSet: IReplicaSet): result_t
+}
+
+class CanaryDeploy implements IDeployStrategy {
+  +Deploy(replicaSet: IReplicaSet): result_t
+}
+
+class ServiceDeployer {
+  -repository: RepositoryInterface
+  -orchestrator: OrchestrationInterface
+  +replicaSet: ReplicaSet
+  +service: Service
+  +manifest: Manifest
+  +Deploy(): result_t
+  +Containerize(): result_t
+}
+
+ServiceDeployer --> IDeployStrategy
+
+@enduml
+
