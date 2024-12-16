@@ -20,7 +20,17 @@ interface ValidatorInterface {
   {abstract} +ValidateToken(token: SSOToken): result_t
 }
 
-class TokenCacheManager implements ValidatorInterface {
+class ValidatorImpl implements ValidatorInterface {
+  -cacheManager: CacheStorageInterface
+  +ValidateToken(token: SSOToken): result_t
+}
+
+interface CacheStorageInterface {
+  {abstract} +Add(token: SSOToken)
+  {abstract} +Get(token: SSOToken): result_t
+}
+
+class FakeCacheStrategy implements CacheStorageInterface {
   -cache: CachedToken[]
   +Add(token: SSOToken)
   +Get(token: SSOToken): result_t
@@ -46,5 +56,6 @@ class RulesManagerImpl implements RulesManagerInterface {
 AuthenticationProvider --> AuthInterface
 AuthenticationProvider --> RulesManagerInterface
 AuthenticationProvider --> ValidatorInterface
-TokenCacheManager --> CachedToken
+ValidatorImpl --> CacheStorageInterface
+FakeCacheStrategy --> CachedToken
 @enduml

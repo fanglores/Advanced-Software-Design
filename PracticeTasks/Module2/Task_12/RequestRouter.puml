@@ -14,12 +14,12 @@ interface CacheManagerInterface {
   {abstract} +GetFromCache(request: Request): Response
 }
 
-class RedisCacheAdapter implements CacheManagerInterface {
+class RedisCacheStrategy implements CacheManagerInterface {
   +GetFromCache(request: Request, response: Response): result_t
   +SetCache(request: Request, response: Response): result_t
 }
 
-class FakeCacheAdapter implements CacheManagerInterface {
+class FakeCacheStrategy implements CacheManagerInterface {
   -cache: map<Request, Response>
   +GetFromCache(request: Request, response: Response): result_t
   +SetCache(request: Request, response: Response): result_t
