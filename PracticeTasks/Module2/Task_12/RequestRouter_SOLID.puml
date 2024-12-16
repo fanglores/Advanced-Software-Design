@@ -11,15 +11,10 @@ interface CacheManagerInterface {
   {abstract} +GetFromCache(request: Request): Response
 }
 
-class RedisCacheAdapter implements CacheManagerInterface {
-  +GetFromCache(request: Request, response: Response): result_t
+class CacheManagerImpl implements CacheManagerInterface {
+  +cache: CacheEntry[]
   +SetCache(request: Request, response: Response): result_t
-}
-
-class FakeCacheAdapter implements CacheManagerInterface {
-  -cache: map<Request, Response>
-  +GetFromCache(request: Request, response: Response): result_t
-  +SetCache(request: Request, response: Response): result_t
+  +GetFromCache(request: Request): Response
 }
 
 interface LoadBalancerInterface {
@@ -38,20 +33,11 @@ interface ValidatorInterface {
   {abstract} +Validate(request: Request): result_t
 }
 
-class OpenApiSchemaValidatorStrategy implements ValidatorInterface {
-  -schema: map<String, String>
-  {abstract} +Validate(request: Request): result_t
+class ValidatorImpl implements ValidatorInterface {
+  +schema: OpenApiSchema
+  +Validate(request: Request): result_t
 }
 
-interface RoutingInterface {
-  {abstract} +SendRequest(route: Route, request: Request): Response
-}
-
-class KubernetesRoutingAdapter implements RoutingInterface {
-  +SendRequest(route: Route, request: Request): Response
-}
-
-RequestRouter --> RoutingInterface
 RequestRouter --> CacheManagerInterface
 RequestRouter --> LoadBalancerInterface
 RequestRouter --> ValidatorInterface
