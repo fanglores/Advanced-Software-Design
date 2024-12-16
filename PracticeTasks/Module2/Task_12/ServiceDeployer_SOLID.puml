@@ -1,0 +1,28 @@
+@startuml
+class ServiceDeployer {
+  +containerizer: ContainerizerInterface
+  +deployer: DeployerInterface
+  +replicaSet: ReplicaSet
+  +service: Service
+  +manifest: Manifest
+}
+
+interface ContainerizerInterface {
+  {abstract} +Containerize(imageName: string): result_t
+}
+
+class ContainerizerImpl implements ContainerizerInterface {
+  +Containerize(imageName: string): result_t
+}
+
+interface DeployerInterface {
+  {abstract} +Deploy(manifest: string): result_t
+}
+
+class DeployerImpl implements DeployerInterface {
+  +Deploy(manifest: string): result_t
+}
+
+ServiceDeployer --> ContainerizerInterface
+ServiceDeployer --> DeployerInterface
+@enduml

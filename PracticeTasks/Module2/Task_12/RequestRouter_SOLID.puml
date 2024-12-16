@@ -1,5 +1,8 @@
 @startuml
 class RequestRouter {
+  +cacheManager: CacheManagerInterface
+  +loadBalancer: LoadBalancerInterface
+  +Validator: ValidatorInterface
   +routes: Route[]
   +Forward(request: Request): result_t
   +GetRoutes(routes: Route[]): result_t
@@ -20,7 +23,6 @@ class CacheManagerImpl implements CacheManagerInterface {
 interface LoadBalancerInterface {
   {abstract} +GetWeight(id: int, out value: int): result_t
   {abstract} +SetWeight(id: int, value: int): result_t
-
 }
 
 class LoadBalancerImpl implements LoadBalancerInterface {

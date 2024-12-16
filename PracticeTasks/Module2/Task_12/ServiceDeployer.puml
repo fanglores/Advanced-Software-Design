@@ -1,13 +1,35 @@
 @startuml
-interface ModelDataStrategy {
+class ServiceDeployer {
+  -repository: RepositoryInterface
+  -orchestrator: OrchestrationInterface
+  -containerizer: ContainerizerInterface
+  -deployer: DeployerInterface
+  +replicaSet: ReplicaSet
+  +service: Service
+  +manifest: Manifest
+}
+
+interface ContainerizerInterface {
+  {abstract} +Containerize(imageName: string): result_t
+}
+
+class ContainerizerImpl implements ContainerizerInterface {
+  +Containerize(imageName: string): result_t
+}
+
+interface DeployerInterface {
+  {abstract} +Deploy(manifest: string): result_t
+}
+
+interface ModelDataInterface {
   {abstract} +extractModelData(schema: JSON): result_t
 }
 
-class CRDStrategy implements ModelDataStrategy {
+class CRDStrategy implements ModelDataInterface {
   +extractModelData(schema: JSON): result_t
 }
 
-class SourceCodeStrategy implements ModelDataStrategy {
+class SourceCodeStrategy implements ModelDataInterface {
   +extractModelData(schema: JSON): result_t
 }
 
@@ -33,17 +55,14 @@ class KubernetesAdapter implements OrchestrationInterface {
   +getCRD(serviceId: String, crd: String): result_t
 }
 
-class ServiceDeployer {
-  -repository: RepositoryInterface
-  -orchestrator: OrchestrationInterface
-  +replicaSet: ReplicaSet
-  +service: Service
-  +manifest: Manifest
-  +Deploy(): result_t
-  +Containerize(): result_t
+class CanaryDeployAdapter implements DeployerInterface {
+  +Deploy(replicaSet: IReplicaSet): result_t
 }
 
+ServiceDeployer --> ContainerizerInterface
+ServiceDeployer --> DeployerInterface
 ServiceDeployer --> RepositoryInterface
-ServiceDeployer --> ModelDataStrategy
+ServiceDeployer --> ModelDataInterface
 ServiceDeployer --> OrchestrationInterface
 @enduml
+
