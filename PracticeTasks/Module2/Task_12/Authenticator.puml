@@ -30,16 +30,15 @@ interface CacheStorageInterface {
   {abstract} +Get(token: SSOToken): result_t
 }
 
-class FakeCacheStrategy implements CacheStorageInterface {
-  -cache: CachedToken[]
+class "RuntimeCacheStrategy {singleton}" implements CacheStorageInterface {
+  -cache: SSOToken[]
   +Add(token: SSOToken)
   +Get(token: SSOToken): result_t
 }
 
-class "CachedToken {singleton}" as CachedToken {
-  -_instance: SSOToken
-  +CachedToken(token: SSOToken): TokenCache
-  +Get(): SSOToken
+class RedisStrategy implements CacheStorageInterface {
+  +Add(token: SSOToken)
+  +Get(token: SSOToken): result_t
 }
 
 interface RulesManagerInterface {
@@ -57,5 +56,4 @@ AuthenticationProvider --> AuthInterface
 AuthenticationProvider --> RulesManagerInterface
 AuthenticationProvider --> ValidatorInterface
 ValidatorImpl --> CacheStorageInterface
-FakeCacheStrategy --> CachedToken
 @enduml
