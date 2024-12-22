@@ -1,0 +1,59 @@
+@startuml
+class AuthenticationProvider {
+  -authStrategy: AuthStrategy
+  -tokenValidator: TokenValidator
+  -tokenCacheManager: TokenCacheManager
+  -rulesManager: RulesManagerInterface
+  +ValidateToken(token: SSOToken): result_t
+  +AuthenticateToken(token: String): SSOToken
+}
+
+interface AuthInterface {
+  {abstract} +Authenticate(token: String): result_t
+}
+
+class FakeAuthStrategy implements AuthInterface {
+  +Authenticate(token: String): result_t
+}
+
+interface ValidatorInterface {
+  {abstract} +ValidateToken(token: SSOToken): result_t
+}
+
+class ValidatorImpl implements ValidatorInterface {
+  -cacheManager: CacheStorageInterface
+  +ValidateToken(token: SSOToken): result_t
+}
+
+interface CacheStorageInterface {
+  {abstract} +Add(token: SSOToken)
+  {abstract} +Get(token: SSOToken): result_t
+}
+
+class "FakeCacheStrategy {singleton}" implements CacheStorageInterface {
+  -cache: SSOToken[]
+  +Add(token: SSOToken)
+  +Get(token: SSOToken): result_t
+}
+
+class RedisStrategy implements CacheStorageInterface {
+  +Add(token: SSOToken)
+  +Get(token: SSOToken): result_t
+}
+
+interface RulesManagerInterface {
+  {abstract} +SetRule(rule: String): result_t
+  {abstract} +GetRules(rules: String[]): result_t
+}
+
+class RulesManagerImpl implements RulesManagerInterface {
+  +rbacRules: String[]
+  +SetRule(rule: String): result_t
+  +GetRules(rules: String[]): result_t
+}
+
+AuthenticationProvider --> AuthInterface
+AuthenticationProvider --> RulesManagerInterface
+AuthenticationProvider --> ValidatorInterface
+ValidatorImpl --> CacheStorageInterface
+@enduml

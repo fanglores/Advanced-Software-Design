@@ -1,0 +1,62 @@
+@startuml
+class RequestRouter {
+  -cacheManager: CacheManagerInterface
+  -loadBalancer: LoadBalancerInterface
+  -validator: ValidatorInterface
+  -router: RoutingInterface
+  +routes: Route[]
+  +Forward(request: Request): result_t
+  +GetRoutes(routes: Route[]): result_t
+  +SetRoutes(routes: Route[]): result_t
+}
+
+interface CacheManagerInterface {
+  {abstract} +SetCache(request: Request, response: Response): result_t
+  {abstract} +GetFromCache(request: Request): Response
+}
+
+class RedisCacheStrategy implements CacheManagerInterface {
+  +GetFromCache(request: Request, response: Response): result_t
+  +SetCache(request: Request, response: Response): result_t
+}
+
+class FakeCacheStrategy implements CacheManagerInterface {
+  -cache: map<Request, Response>
+  +GetFromCache(request: Request, response: Response): result_t
+  +SetCache(request: Request, response: Response): result_t
+}
+
+interface LoadBalancerInterface {
+  {abstract} +GetWeight(id: int, out value: int): result_t
+  {abstract} +SetWeight(id: int, value: int): result_t
+
+}
+
+class LoadBalancerImpl implements LoadBalancerInterface {
+  +weights: map<id: int, weight: int>
+  +GetWeight(id: int, out value: int): result_t
+  +SetWeight(id: int, value: int): result_t
+}
+
+interface ValidatorInterface {
+  {abstract} +Validate(request: Request): result_t
+}
+
+class OpenApiSchemaValidatorStrategy implements ValidatorInterface {
+  -schema: map<String, String>
+  {abstract} +Validate(request: Request): result_t
+}
+
+interface RoutingInterface {
+  {abstract} +SendRequest(route: Route, request: Request): Response
+}
+
+class KubernetesRoutingAdapter implements RoutingInterface {
+  +SendRequest(route: Route, request: Request): Response
+}
+
+RequestRouter --> RoutingInterface
+RequestRouter --> CacheManagerInterface
+RequestRouter --> LoadBalancerInterface
+RequestRouter --> ValidatorInterface
+@enduml

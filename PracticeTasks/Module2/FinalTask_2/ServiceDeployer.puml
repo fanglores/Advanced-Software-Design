@@ -1,0 +1,59 @@
+@startuml
+class ServiceDeployer {
+  -repository: RepositoryInterface
+  -orchestrator: OrchestrationInterface
+  -containerizer: ContainerizerInterface
+  +replicaSet: ReplicaSet
+  +service: Service
+  +manifest: Manifest
+  +Deploy(): result_t
+}
+
+interface ContainerizerInterface {
+  {abstract} +Containerize(imageName: string): result_t
+}
+
+class ContainerizerImpl implements ContainerizerInterface {
+  +Containerize(imageName: string): result_t
+}
+
+interface ModelDataInterface {
+  {abstract} +extractModelData(schema: JSON): result_t
+}
+
+class CRDStrategy implements ModelDataInterface {
+  +extractModelData(schema: JSON): result_t
+}
+
+class SourceCodeStrategy implements ModelDataInterface {
+  +extractModelData(schema: JSON): result_t
+}
+
+interface RepositoryInterface {
+  {abstract} +GetFileContents(url: string, data: string): result_t
+}
+
+class GitAdapter implements RepositoryInterface {
+  +GetFileContents(url: string, data: string): result_t
+}
+
+interface OrchestrationInterface {
+  {abstract} +deployService(serviceId: String, replicas: Int): result_t
+  {abstract} +scaleReplicas(serviceId: String, replicas: Int): result_t
+  {abstract} +getStatus(serviceId: String): String
+  {abstract} +getCRD(serviceId: String, crd: String): result_t
+}
+
+class KubernetesAdapter implements OrchestrationInterface {
+  +deployService(serviceId: String, replicas: Int): result_t
+  +scaleReplicas(serviceId: String, replicas: Int): result_t
+  +getStatus(serviceId: String): String
+  +getCRD(serviceId: String, crd: String): result_t
+}
+
+ServiceDeployer --> ContainerizerInterface
+ServiceDeployer --> RepositoryInterface
+ServiceDeployer --> ModelDataInterface
+ServiceDeployer --> OrchestrationInterface
+@enduml
+
