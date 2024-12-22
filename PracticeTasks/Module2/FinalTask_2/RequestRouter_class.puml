@@ -1,0 +1,65 @@
+@startuml
+class RequestRouter <<root>> {
+  -cacheManager: CacheManagerInterface
+  -loadBalancer: LoadBalancerInterface
+  -validator: ValidatorInterface
+  -router: RoutingInterface
+  +routes: Route[]
+  +Forward(request: Request): result_t
+  +GetRoutes(routes: Route[]): result_t
+  +SetRoutes(routes: Route[]): result_t}
+}
+
+class FakeCacheStrategy <<entity>> {
+  - cache: map<Request, Response>
+  + SetCache(request: Request, response: Response): result_t
+  + GetFromCache(request: Request): result_t
+}
+
+class OpenApiSchemaValidatorStrategy <<entity>> {
+  - schema: map<String, String>
+  + Validate(request: Request): result_t
+}
+
+class KubernetesRoutingAdapter <<entity>> {
+  + SendRequest(route: Route, request: Request): Response
+}
+
+class LoadBalancerImpl <<service>> {
+  + weights: map<int, int>
+  + GetWeight(id: int, out value: int): result_t
+  + SetWeight(id: int, value: int): result_t
+}
+
+class Route <<value>> {
+  +dns: string
+  +serviceName: string
+  +params: string
+}
+
+class Request <<value>> {
+  +id: int
+  +data: string
+}
+
+class Response <<value>> {
+  +id: int
+  +data: string
+}
+
+class OpenApiSchema <<value>> {
+  +id: string
+  +data: JSON
+}
+
+RequestRouter *-up- Route
+RequestRouter *-up- Request
+RequestRouter o-up- Response
+OpenApiSchemaValidatorStrategy *-- OpenApiSchema
+
+RequestRouter --> FakeCacheStrategy
+RequestRouter --> LoadBalancerImpl
+RequestRouter --> OpenApiSchemaValidatorStrategy
+RequestRouter --> KubernetesRoutingAdapter
+
+@enduml
