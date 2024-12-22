@@ -3,6 +3,7 @@ class ServiceDeployer <<root>> {
   -repository: RepositoryInterface
   -orchestrator: OrchestrationInterface
   -containerizer: ContainerizerInterface
+  -modelData: ModelDataInterface
   +replicaSet: ReplicaSet
   +service: Service
   +manifest: Manifest
