@@ -1,0 +1,11 @@
+apiVersion: ml.kea-project.io/v1alpha1
+kind: MLModel
+metadata:
+  name: mymodel
+  namespace: kea-project
+spec:
+  modelName: mymodel
+  modelFramework: tensorflow
+  s3Path: "https://storage.yandexcloud.net/YOUR_BUCKET_NAME/tf-model-file"
+  inputType: JSON
+  outputType: JSON

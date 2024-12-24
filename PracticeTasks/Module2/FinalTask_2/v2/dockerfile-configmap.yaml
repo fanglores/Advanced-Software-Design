@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: serving-files
+  namespace: kea-project
+data:
+  Dockerfile: |
+    FROM python:3.9-slim
+    RUN pip install --no-cache-dir fastapi uvicorn gunicorn tensorflow scikit-learn joblib
+    COPY app.py /app/app.py
+    WORKDIR /app
+    EXPOSE 80
+    CMD ["gunicorn", "-w", "2", "-k", "uvicorn.workers.UvicornWorker", "app:app", "--bind", "0.0.0.0:80"]
+  app.py: |
+    import os
+    import joblib
+    import tensorflow as tf
+    from fastapi import FastAPI, Request
+    import uvicorn
+
+    app = FastAPI()
+
+    FRAMEWORK = os.environ.get("MODEL_FRAMEWORK", "sklearn")
+    MODEL_PATH = os.environ.get("MODEL_PATH", "/tmp/model")
+    model = None
+
+    @app.on_event("startup")
+    def load_model():
+        global model
+        if FRAMEWORK.lower() == "tensorflow":
+            model = tf.keras.models.load_model(MODEL_PATH)
+        else:
+            model = joblib.load(MODEL_PATH)
+
+    @app.post("/predict")
+    async def predict(request: Request):
+        data = await request.json()
+        if FRAMEWORK.lower() == "tensorflow":
+            preds = model.predict(data["instances"]).tolist()
+            return {"predictions": preds}
+        else:
+            preds = model.predict(data["instances"]).tolist()
+            return {"predictions": preds}
+
+    if __name__ == "__main__":
+        uvicorn.run(app, host="0.0.0.0", port=80)

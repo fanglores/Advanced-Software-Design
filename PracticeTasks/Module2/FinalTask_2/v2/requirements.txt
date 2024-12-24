@@ -1,0 +1,4 @@
+kopf==1.36.0
+kubernetes==26.1.0
+PyYAML==6.0
+joblib==1.2.0

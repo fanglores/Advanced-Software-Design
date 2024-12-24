@@ -1,0 +1,47 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: mlmodels.ml.kea-project.io
+spec:
+  group: ml.kea-project.io
+  names:
+    kind: MLModel
+    listKind: MLModelList
+    plural: mlmodels
+    singular: mlmodel
+  scope: Namespaced
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              properties:
+                modelName:
+                  type: string
+                modelFramework:
+                  type: string
+                  description: "e.g. tensorflow, sklearn"
+                s3Path:
+                  type: string
+                  description: "S3 path to the model (Yandex Object Storage)."
+                inputType:
+                  type: string
+                  description: "Describe expected input format (JSON, etc.)"
+                outputType:
+                  type: string
+                  description: "Describe output format"
+      additionalPrinterColumns:
+        - name: ModelName
+          type: string
+          jsonPath: .spec.modelName
+        - name: Framework
+          type: string
+          jsonPath: .spec.modelFramework
+        - name: S3Path
+          type: string
+          jsonPath: .spec.s3Path
