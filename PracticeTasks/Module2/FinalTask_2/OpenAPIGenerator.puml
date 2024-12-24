@@ -1,0 +1,67 @@
+@startuml
+interface IOpenApiSchema {
+  +getId(): String
+  +getData(): JSON
+}
+
+interface IModel {
+  +id: String
+  +crd: CRD
+  +code: SourceCode
+}
+
+interface IOpenApiSchemaFactory {
+  +CreateSchema(model: IModel): IOpenApiSchema
+  +ValidateSchema(schema: IOpenApiSchema): Boolean
+}
+
+class OpenApiSchema implements IOpenApiSchema {
+  +id: String
+  +data: JSON
+  +getId(): String
+  +getData(): JSON
+}
+
+class Model implements IModel {
+  +id: String
+  +crd: CRD
+  +code: SourceCode
+
+}
+
+class CRD {
+  +data: String
+}
+
+class SourceCode {
+  +url: String
+}
+
+class OpenApiSchemaFactory implements IOpenApiSchemaFactory {
+  +CreateSchema(model: IModel): IOpenApiSchema
+  +ValidateSchema(schema: IOpenApiSchema): Boolean
+}
+
+class OpenAPIGenerator {
+  -schemaGenerator: IOpenApiSchemaFactory
+  -repository: RepositoryInterface
+  -model: IModel
+  +GetSchema(id: String): IOpenApiSchema
+}
+
+interface RepositoryInterface {
+  {abstract} +GetFileContents(url: string, data: string): result_t
+}
+
+class GitAdapter implements RepositoryInterface {
+  +GetFileContents(url: string, data: string): result_t
+}
+
+OpenAPIGenerator  -->  IOpenApiSchema
+OpenAPIGenerator  -->  IModel 
+IModel  -->  CRD 
+IModel  -->  SourceCode 
+OpenAPIGenerator  -->  IOpenApiSchemaFactory 
+IOpenApiSchemaFactory --> IOpenApiSchema
+RepositoryInterface --> OpenAPIGenerator
+@enduml
